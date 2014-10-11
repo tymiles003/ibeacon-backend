@@ -1,0 +1,128 @@
+@font-face {
+    font-family: Proxima;
+    src: local('Proxima Nova'), url("./proxima.woff") format("woff");
+}
+html, body{
+    font-family: Proxima !important;
+    height: 100%; 
+    font-size: 12px !important;
+}
+
+.btn{
+    padding:5px 8px;
+    font-size: 1em;
+    background: #fff;
+    color: #046404;
+    border: 1px solid #046404;
+    transition: all .3s linear;
+}
+.btn:hover{
+    background: #034b03;
+    color:#fff;
+}
+
+nav.sidebar{
+    position: absolute;
+    height:100%;
+}
+nav.sidebar ul{
+    list-style-type: none;
+    padding:0;
+    margin:0;
+    background: #303641;
+    width: 280px;
+    height: 100%;
+}
+
+nav.sidebar ul > li .fa{
+    margin-right: 7px;
+}
+
+nav.sidebar ul > li > a{
+    display: block;
+    padding:10px 30px;
+    width:100%;
+    height:100%;
+    color: #ccc;
+    transition: all .3s linear;
+    border-bottom:1px solid rgba(69,74,84,0.4);
+    text-decoration: none;
+}
+nav.sidebar ul > li:hover > a{
+    padding-left:45px;
+    color: #fff;
+    background: #22262e;
+}
+
+.main{
+    margin-left: 280px;
+    min-height:100%;
+    background: #fff;
+    padding:20px;
+}
+
+.module_title{
+    border:1px solid #ccc;
+    border-bottom: 0;
+    border-radius:5px 5px 0 0;
+    padding: 5px 10px;
+    font-size: 1.2em;
+    color:#333;
+    font-weight: 700;
+}
+
+.module_btn{
+    margin-bottom: 15px;
+}
+
+.module{
+    clear: both;
+    color: #666;
+}
+.module > table{
+    width: 100%;
+}
+
+.module > table > tbody > tr:first-child > td{
+    background: #eee;
+}
+
+.module > table > tbody > tr > td{
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
+.module_body{
+    border:1px solid #ccc;
+}
+
+.module_body > form{
+    overflow: hidden;
+}
+
+.module_body > form label{
+    padding-top: 5px;
+    text-align: right;
+}
+
+.module_body > form input[type='text']{
+    border: 1px solid #eee;
+    padding:5px;
+    border-radius:5px;
+}
+
+.module_body > form input[type='submit']{
+    margin-bottom:15px;   
+}
+
+.form-group{
+    border-bottom:1px solid #ccc;
+    overflow: hidden;
+    padding:10px;
+}
+
+.bg-success{
+    padding:10px 20px;
+    font-weight: 700;
+    font-size:1.3em;
+}
