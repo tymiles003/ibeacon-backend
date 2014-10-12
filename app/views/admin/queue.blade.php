@@ -1,6 +1,10 @@
 @extends('admin.layout')
 @section('content')
 <div class="row">
+<div class="main_header">
+        Queue
+    </div>
+    <div class="main_body">
                 <div class="col-xs-12">
                     <div class="module">
                         <div class="module_title">
@@ -26,6 +30,7 @@
                         </table>
                     </div>
                 </div>
+            </div>
             </div>
 @stop
 

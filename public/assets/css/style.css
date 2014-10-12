@@ -3,22 +3,29 @@
     src: local('Proxima Nova'), url("./proxima.woff") format("woff");
 }
 html, body{
-    font-family: Proxima !important;
     height: 100%; 
     font-size: 12px !important;
+}
+.row{
+    margin:0;
 }
 
 .btn{
     padding:5px 8px;
     font-size: 1em;
-    background: #fff;
-    color: #046404;
-    border: 1px solid #046404;
+    background: rgba(67, 96, 65, 0.69);
+    color: #f7f7f7;
     transition: all .3s linear;
 }
+
 .btn:hover{
     background: #034b03;
     color:#fff;
+}
+
+.bg-success{
+    background-color: #75C754;
+    color: #095E18;
 }
 
 nav.sidebar{
@@ -58,21 +65,39 @@ nav.sidebar ul > li:hover > a{
     margin-left: 280px;
     min-height:100%;
     background: #fff;
-    padding:20px;
+    padding:0px;
+    background: #F2F4F5;
 }
 
-.module_title{
-    border:1px solid #ccc;
-    border-bottom: 0;
-    border-radius:5px 5px 0 0;
-    padding: 5px 10px;
-    font-size: 1.2em;
-    color:#333;
+.main_header{
+    text-align: center;
+    padding: 0 20px;
+    background: #448d58;
+    color: #fff;
+    font-size: 1.3em;
+    overflow: hidden;
+    margin-bottom: 15px;
+    line-height: 50px;
     font-weight: 700;
 }
 
+.main_body{
+    padding: 0 5px;
+    overflow: hidden;
+}
+
+.module_title{
+    border-bottom: 0;
+    border-radius:5px 5px 0 0;
+    padding: 10px 15px;
+    font-size: 1.2em;
+    color:#fff;
+    font-weight: 700;
+    background: #2C406C;
+}
+
 .module_btn{
-    margin-bottom: 15px;
+    margin-top: 8px;
 }
 
 .module{
@@ -81,6 +106,7 @@ nav.sidebar ul > li:hover > a{
 }
 .module > table{
     width: 100%;
+    background: #fff;
 }
 
 .module > table > tbody > tr:first-child > td{
@@ -89,10 +115,11 @@ nav.sidebar ul > li:hover > a{
 
 .module > table > tbody > tr > td{
     border: 1px solid #ccc;
-    padding: 8px;
+    padding: 8px 15px;
 }
 
 .module_body{
+    background: #fff;
     border:1px solid #ccc;
 }
 
@@ -111,14 +138,19 @@ nav.sidebar ul > li:hover > a{
     border-radius:5px;
 }
 
+.module_body > form input[type='file']{
+    width: 36%; 
+}
+
 .module_body > form input[type='submit']{
-    margin-bottom:15px;   
+    margin: 15px 0; 
 }
 
 .form-group{
+    margin-bottom: 0;
     border-bottom:1px solid #ccc;
     overflow: hidden;
-    padding:10px;
+    padding:15px 10px;
 }
 
 .bg-success{
@@ -126,3 +158,4 @@ nav.sidebar ul > li:hover > a{
     font-weight: 700;
     font-size:1.3em;
 }
+

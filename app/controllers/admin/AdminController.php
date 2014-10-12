@@ -17,6 +17,39 @@ class AdminController extends \BaseController {
 		return View::make('admin.queue')->with($response);
 	}
 
+	
+	public function category(){
+		$cats = Category::all();
+		$response = array();
+		$response['cats'] = $cats;
+		return View::make('admin.category')->with($response);
+	}
+
+	public function categoryDetail(){
+		if(Route::input('id') > 0){
+			$cat = Category::find(Route::input('id'));
+			return View::make('admin.category_edit')->with('cat', $cat);
+		}else{
+			return View::make('admin.category_create');
+		}
+	}
+
+	public function categoryEdit(){
+		$post_data = Input::all();
+		$cat = Category::find(Input::get('id'));
+		$cat->fill($post_data);
+		$cat->save();
+		return View::make('admin.category_edit')->with('cat', $cat)->with('message', 'Edit successfully');
+	}
+
+	public function categoryCreate(){
+		$cat = new Category();
+		$post_data = Input::all();
+		$cat->fill($post_data);
+		$cat->save();
+		return View::make('admin.category_edit')->with('cat', $cat)->with('message', 'Add successfully');
+	}
+
 	public function item(){
 		$items = Item::all();
 		$response = array();
@@ -44,10 +77,10 @@ class AdminController extends \BaseController {
 		foreach($cats as $cat){
 			$catOption[$cat->id] = $cat->catname;
 		}
-		$post_data = Input::all();
+		$post_data = Input::except('itemimg');
 		$item = Item::find(Input::get('id'));
 		$item->fill($post_data);
-		if (Input::hasFile('itemimg'))
+		if (Input::hasFile('itemimg') === true)
 		{
 			$destinationPath = public_path()."/assets/item/";
 		    Input::file('itemimg')->move($destinationPath, Input::file('itemimg')->getClientOriginalName());
@@ -64,9 +97,9 @@ class AdminController extends \BaseController {
 			$catOption[$cat->id] = $cat->catname;
 		}
 		$item = new Item();
-		$post_data = Input::all();
+		$post_data = Input::except('itemimg');
 		$item->fill($post_data);
-		if (Input::hasFile('itemimg'))
+		if (Input::hasFile('itemimg') === true)
 		{
 			$destinationPath = public_path()."/assets/item/";
 		    Input::file('itemimg')->move($destinationPath, Input::file('itemimg')->getClientOriginalName());

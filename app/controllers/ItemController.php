@@ -83,7 +83,8 @@ class ItemController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$item = Item::find($id);
+		$item->delete();
 	}
 
 

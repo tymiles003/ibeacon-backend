@@ -37,8 +37,16 @@ Route::get('bill/getBillByTableID/{id}', array('uses' => 'BillController@getBill
 Route::get('queues/listQueue', array('uses' => 'QueueController@listQueue'));
 Route::get('queues/listQueue/{id}', array('uses' => 'QueueController@listQueue'));
 Route::get('admin/queue', array('uses' => 'AdminController@queue'));
+
+Route::get('admin/category', array('uses' => 'AdminController@category'));
+Route::get('admin/category/{id}', array('uses' => 'AdminController@categoryDetail'));
+Route::post('admin/category', array('uses' => 'AdminController@categoryCreate'));
+Route::post('admin/category/{id}', array('uses' => 'AdminController@categoryEdit'));
+
 Route::get('admin/item', array('uses' => 'AdminController@item'));
 Route::get('admin/item/create', array('uses' => 'AdminController@itemDetail'));
 Route::get('admin/item/{id}', array('uses' => 'AdminController@itemDetail'));
 Route::post('admin/item', array('uses' => 'AdminController@itemCreate'));
 Route::post('admin/item/{id}', array('uses' => 'AdminController@itemEdit'));
+
+

@@ -1,6 +1,11 @@
 @extends('admin.layout')
 @section('content')
 <div class="row">
+    <div class="main_header">
+        Item
+        <a href="/admin/item/"><button class="btn pull-left module_btn">Back</button></a>
+    </div>
+    <div class="main_body">
                 <div class="col-xs-12">
                     @if(isset($message))
                         <p class="bg-success">{{$message}}</p>
@@ -36,6 +41,7 @@
                         {{ Form::close() }}
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
 @stop
