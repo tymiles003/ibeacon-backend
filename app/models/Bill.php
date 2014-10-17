@@ -1,9 +1,11 @@
 <?php
 
-class Bill extends Eloquent{
+class Bill extends Eloquent
+{
 
-	protected $table = 'bill';
-	public function orders()
+    protected $table = 'bill';
+
+    public function orders()
     {
         return $this->hasMany('Order');
     }

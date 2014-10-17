@@ -2,7 +2,7 @@
 
 class Order extends Eloquent{
 
-	protected $table = 'Order';
+	protected $table = 'order';
 	public function bill()
     {
         return $this->belongsTo('Bill');

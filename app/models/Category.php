@@ -1,11 +1,12 @@
 <?php
 
-class Category extends Eloquent{
+class Category extends Eloquent
+{
 
-	protected $table = 'category';
-	protected $fillable = array('catname');
+    protected $table = 'category';
+    protected $fillable = array('catname');
 
-	public function items()
+    public function items()
     {
         return $this->hasMany('Item');
     }

@@ -3,7 +3,7 @@
 class BillController extends \BaseController {
 
 	public function getBillByTableID(){
-		$bill = Bill::where('table_id', '=', Route::input('id'))->get();
+		$bill = Bill::where('table_id', '=', Route::input('id'))->where('status', '=', 0)->get();
 		
 		if(count($bill) == 0){
 			$bill = new Bill();

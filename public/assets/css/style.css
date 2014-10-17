@@ -6,6 +6,15 @@ html, body{
     height: 100%; 
     font-size: 12px !important;
 }
+select{
+    -webkit-appearance:none;
+    appearance:none;
+    border:0;
+    border-radius: 0;
+}
+a, a:hover, a:focus{
+    text-decoration: none;
+}
 .row{
     margin:0;
 }
@@ -29,7 +38,7 @@ html, body{
 }
 
 nav.sidebar{
-    position: absolute;
+    position: fixed;
     height:100%;
 }
 nav.sidebar ul{
@@ -44,7 +53,6 @@ nav.sidebar ul{
 nav.sidebar ul > li .fa{
     margin-right: 7px;
 }
-
 nav.sidebar ul > li > a{
     display: block;
     padding:10px 30px;
@@ -52,15 +60,33 @@ nav.sidebar ul > li > a{
     height:100%;
     color: #ccc;
     transition: all .3s linear;
-    border-bottom:1px solid rgba(69,74,84,0.4);
     text-decoration: none;
+    border-bottom:1px solid rgba(69,74,84,0.4);
 }
-nav.sidebar ul > li:hover > a{
+
+nav.sidebar ul > li > a:hover{
     padding-left:45px;
     color: #fff;
     background: #22262e;
 }
 
+nav.sidebar ul > li > ul{
+    max-height: 0;
+    height: 0;
+    overflow: hidden;
+    transition: all .6s linear;
+}
+nav.sidebar ul > li:hover > ul{
+    max-height: 999px;
+    height:100%;
+    display: block;
+}
+nav.sidebar ul > li > ul > li > a{
+    padding: 10px 45px;
+}
+nav.sidebar ul > li > ul > li > a:hover{
+    padding: 10px 60px;
+}
 .main{
     margin-left: 280px;
     min-height:100%;
@@ -95,7 +121,20 @@ nav.sidebar ul > li:hover > a{
     font-weight: 700;
     background: #2C406C;
 }
-
+.module_toolbar{
+    padding:10px 15px;
+    background:#373737;
+    color:#fff;
+}
+.module_content{
+    background: #fff;
+}
+.module_blue{
+    background: #31728E;
+}
+.module_green{
+    background: #318E79;
+}
 .module_btn{
     margin-top: 8px;
 }
@@ -103,6 +142,7 @@ nav.sidebar ul > li:hover > a{
 .module{
     clear: both;
     color: #666;
+    margin-bottom: 15px;
 }
 .module > table{
     width: 100%;
@@ -111,6 +151,7 @@ nav.sidebar ul > li:hover > a{
 
 .module > table > tbody > tr:first-child > td{
     background: #eee;
+    border-top: 0;
 }
 
 .module > table > tbody > tr > td{
@@ -159,3 +200,45 @@ nav.sidebar ul > li:hover > a{
     font-size:1.3em;
 }
 
+/**DECORATIVE MODULES**/
+.tile{
+    border-radius:5px;
+    padding:15px;
+    margin-bottom: 15px;
+}
+.tile_heading{
+    position: relative;
+    font-size:1.2em;
+}
+.tile_icon{
+    position: absolute;
+    right: 0;
+    font-size: 6rem;
+    bottom: -25px;
+    opacity: .7;
+}
+.tile_content{
+    font-size:3em;
+    font-weight: 700;
+}
+
+.tile_red{
+    background: rgb(244, 100, 100);
+    color: #efefef;
+}
+
+.tile_blue{
+    background: rgb(100, 162, 244);
+    color:#efefef;
+}
+
+.tile_orange{
+    background: rgb(244, 166, 100);
+    color:#efefef;
+}
+
+.chart_select{
+    color:#32C24A;
+    background: transparent;
+    margin-right:20px;
+}

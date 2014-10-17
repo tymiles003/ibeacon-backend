@@ -15,7 +15,7 @@
                         Category Edit
                         </div>
                         <div class="module_body">
-                        {{ Form::model($cat, array('files' => true, 'url' => 'admin/category/'.$cat->id, $cat->id)) }}  
+                        {{ Form::model($cat, array('url' => 'admin/category/'.$cat->id, $cat->id)) }}  
                         {{ Form::hidden('id') }}
                         <div class="form-group">
                         {{ Form::label('catname', 'Name', array('class' => 'col-xs-3')) }}

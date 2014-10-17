@@ -1681,5 +1681,173 @@
             "framework",
             "laravel"
         ]
+    },
+    {
+        "name": "symfony/class-loader",
+        "version": "v2.5.5",
+        "version_normalized": "2.5.5.0",
+        "target-dir": "Symfony/Component/ClassLoader",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/ClassLoader.git",
+            "reference": "432561f655123b003b32f370ca812fed9a9340c6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/ClassLoader/zipball/432561f655123b003b32f370ca812fed9a9340c6",
+            "reference": "432561f655123b003b32f370ca812fed9a9340c6",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "symfony/finder": "~2.0"
+        },
+        "time": "2014-09-22 09:14:18",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\ClassLoader\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            },
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            }
+        ],
+        "description": "Symfony ClassLoader Component",
+        "homepage": "http://symfony.com"
+    },
+    {
+        "name": "phpdocumentor/reflection-docblock",
+        "version": "2.0.3",
+        "version_normalized": "2.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
+            "reference": "38743b677965c48a637097b2746a281264ae2347"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/38743b677965c48a637097b2746a281264ae2347",
+            "reference": "38743b677965c48a637097b2746a281264ae2347",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*@stable"
+        },
+        "suggest": {
+            "dflydev/markdown": "1.0.*",
+            "erusev/parsedown": "~0.7"
+        },
+        "time": "2014-08-09 10:27:07",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "phpDocumentor": [
+                    "src/"
+                ]
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mike van Riel",
+                "email": "mike.vanriel@naenius.com"
+            }
+        ]
+    },
+    {
+        "name": "barryvdh/laravel-ide-helper",
+        "version": "v1.11.3",
+        "version_normalized": "1.11.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/barryvdh/laravel-ide-helper.git",
+            "reference": "9a67d9132f0e2b9ed5d668aaa8a2ebc7d4dd6d49"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/9a67d9132f0e2b9ed5d668aaa8a2ebc7d4dd6d49",
+            "reference": "9a67d9132f0e2b9ed5d668aaa8a2ebc7d4dd6d49",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/console": "4.x",
+            "illuminate/filesystem": "4.x",
+            "illuminate/support": "4.x",
+            "php": ">=5.3.0",
+            "phpdocumentor/reflection-docblock": "2.0.x",
+            "symfony/class-loader": "~2.3"
+        },
+        "require-dev": {
+            "doctrine/dbal": "~2.3"
+        },
+        "suggest": {
+            "doctrine/dbal": "Load information from the database about models for phpdocs (~2.3)"
+        },
+        "time": "2014-08-26 08:54:34",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.11-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Barryvdh\\LaravelIdeHelper\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Barry vd. Heuvel",
+                "email": "barryvdh@gmail.com"
+            }
+        ],
+        "description": "Laravel IDE Helper, generates correct PHPDocs for all Facade classes, to improve auto-completion.",
+        "keywords": [
+            "autocomplete",
+            "codeintel",
+            "helper",
+            "ide",
+            "laravel",
+            "netbeans",
+            "phpdoc",
+            "phpstorm",
+            "sublime"
+        ]
     }
 ]

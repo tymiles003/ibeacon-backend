@@ -12,16 +12,26 @@
 */
 
 //admin filter
-Route::filter('admin', function()
-{
-	if (Auth::check()){
-    	if (Auth::user()->email != 'baalmok@gmail.com')
-	    {
-	        return 'bye';
-	    }
-	}else{
-		return 'bye';
-	}
+Route::filter('admin', function () {
+    if (Auth::check()) {
+        if (Auth::user()->email != 'baalmok@gmail.com') {
+            return 'bye';
+        }
+    } else {
+        return 'bye';
+    }
+});
+
+//queue settings route
+Route::get('setting/getUUID', function () {
+    $uuid = DB::table('queue_setting')->where('key', '=', 'uuid')->first();
+    $major = DB::table('queue_setting')->where('key', '=', 'major')->first();
+    $minor = DB::table('queue_setting')->where('key', '=', 'minor')->first();
+    $response = array();
+    $response['uuid'] = $uuid->value;
+    $response['major'] = $major->value;
+    $response['minor'] = $minor->value;
+    return Response::json($response);
 });
 
 //normal routes
@@ -29,16 +39,28 @@ Route::resource('queue', 'QueueController');
 Route::resource('item', 'ItemController');
 Route::resource('category', 'CategoryController');
 Route::resource('user', 'UserController');
+Route::get('queues/avgWaitingTime/{type}', array('uses' => 'QueueController@avgWaitingTime'));
+Route::get('queues/entranceRate/{type}', array('uses' => 'QueueController@entranceRate'));
+Route::get('queues/waitingTime/{type}', array('uses' => 'QueueController@waitingTime'));
 Route::get('queues/currentNumber', array('uses' => 'QueueController@currentNumber'));
 Route::get('bill/getBillByTableID/{id}', array('uses' => 'BillController@getBillByTableID'));
 
 
 //route group for admin
+Route::get('admin/queue_type', array('uses' => 'AdminController@queue_type'));
+Route::get('admin/queue_type/create', array('uses' => 'AdminController@queue_typeDetail'));
+
 Route::get('queues/listQueue', array('uses' => 'QueueController@listQueue'));
-Route::get('queues/listQueue/{id}', array('uses' => 'QueueController@listQueue'));
-Route::get('admin/queue', array('uses' => 'AdminController@queue'));
+Route::get('queues/listQueue/{id}/type/{type}', array('uses' => 'QueueController@listQueue'));
+Route::get('admin/queue/{type?}', array('uses' => 'AdminController@queue'));
+Route::get('admin/queue_stat/{type?}', array('uses' => 'AdminController@queueStat'));
+
+Route::get('admin/table', array('uses' => 'AdminController@table'));
+Route::get('admin/table/create', array('uses' => 'AdminController@tableDetail'));
+Route::post('admin/table', array('uses' => 'AdminController@tableCreate'));
 
 Route::get('admin/category', array('uses' => 'AdminController@category'));
+Route::get('admin/category/create', array('uses' => 'AdminController@categoryDetail'));
 Route::get('admin/category/{id}', array('uses' => 'AdminController@categoryDetail'));
 Route::post('admin/category', array('uses' => 'AdminController@categoryCreate'));
 Route::post('admin/category/{id}', array('uses' => 'AdminController@categoryEdit'));

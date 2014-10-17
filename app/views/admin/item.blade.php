@@ -3,7 +3,7 @@
 <div class="row">
     <div class="main_header">
                     Item
-                    <a href="/admin/item/create"><button class="btn pull-left module_btn">Add Item</button></a>
+                    <a href="/admin/item/create"><button class="btn pull-left module_btn"><i class="fa fa-plus-circle"></i> Add Item</button></a>
                 </div>
                                 <div class="main_body">
                 <div class="col-xs-12">
@@ -16,7 +16,7 @@
                             <tr>
                                 <td>Item ID</td>
                                 <td>Item Name</td>
-                                <td>Status</td>
+                                <td>Price</td>
                                 <td>Last Modified</td>
                                 <td>Action</td>
                             </tr>
@@ -24,11 +24,11 @@
                             <tr>
                                 <td>{{$item->id}}</td>
                                 <td>{{$item->itemname}}</td>
-                                <td>{{$item->price}}</td>
+                                <td>$ {{$item->price}}</td>
                                 <td>{{$item->updated_at}}</td>
                                 <td>
-                                    <a href="/admin/item/{{$item->id}}"><button class="btn">Edit</button></a>
-                                    <button id="delete_btn" data-id="{{$item->id}}" class="btn">Delete</button>
+                                    <a href="/admin/item/{{$item->id}}"><button class="btn"><i class="fa fa-pencil"></i> Edit</button></a>
+                                    <button id="delete_btn" data-id="{{$item->id}}" class="btn"><i class="fa fa-remove"></i> Delete</button>
                                 </td>
                             </tr>
                             @endforeach
