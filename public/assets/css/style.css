@@ -1,101 +1,220 @@
+@import url(http://fonts.googleapis.com/css?family=Lobster+Two:400,700italic);
 @font-face {
     font-family: Proxima;
-    src: local('Proxima Nova'), url("./proxima.woff") format("woff");
+    src: local('Proxima Nova'), url("/proxima.woff") format("woff");
 }
-html, body{
-    height: 100%; 
+input{
+    outline:none;
+}
+html, body {
+    height: 100%;
+    font-family: Proxima;
     font-size: 12px !important;
 }
-select{
-    -webkit-appearance:none;
-    appearance:none;
-    border:0;
+
+select {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
     border-radius: 0;
 }
-a, a:hover, a:focus{
+
+a, a:hover, a:focus {
     text-decoration: none;
 }
-.row{
-    margin:0;
+
+.main > .row {
+    margin: 0;
+    padding-top:64px;
 }
 
-.btn{
-    padding:5px 8px;
+.btn {
+    padding: 5px 8px;
     font-size: 1em;
     background: rgba(67, 96, 65, 0.69);
     color: #f7f7f7;
     transition: all .3s linear;
 }
 
-.btn:hover{
+.btn:hover {
     background: #034b03;
-    color:#fff;
+    color: #fff;
 }
 
-.bg-success{
+.bg-success {
     background-color: #75C754;
     color: #095E18;
 }
 
-nav.sidebar{
-    position: fixed;
-    height:100%;
-}
-nav.sidebar ul{
-    list-style-type: none;
-    padding:0;
-    margin:0;
-    background: #303641;
-    width: 280px;
+.login {
+    width: 100%;
     height: 100%;
+    background: #303641;
+    background-size: cover;
 }
 
-nav.sidebar ul > li .fa{
+.login h1{
+    font-family: 'Lobster Two', cursive;
+    font-size: 4em;
+    font-style: italic;
+    text-align: center;
+    color: #fff;
+    text-shadow: 4px 3px 0px #3A4352, 9px 8px 0px rgba(17, 18, 19, 0.15);
+}
+
+.login .warning{
+    margin: 0 10px;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(252, 70, 70, 0.56);
+    padding: 15px;
+}
+.login label {
+    position: absolute;
+    float: left;
+    color: #fff;
+    font-size: 1.6em;
+    top: 20px;
+}
+
+.login input[type='text'],
+.login input[type='password'] {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    padding: 9px 50px;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    font-size: 1.3em;
+}
+
+.login input[type='submit']{
+    width: 100%;
+    border-radius: 0;
+    font-size: 1.3em;
+    padding: 15px;
+}
+
+.login .btn{
+    background: rgba(84, 149, 236, 0.7);
+}
+.login .btn:hover{
+    background: rgba(40, 85, 145, 0.7);
+}
+
+.login input[type='text']::-webkit-input-placeholder,
+.login input[type='password']::-webkit-input-placeholder{
+    color: #fff;
+}
+
+.login input[type='text']::-moz-placeholder,
+.login input[type='password  ']::-moz-placeholder{
+    color: #fff;
+}
+
+/* firefox 19+ */
+.login input[type='text']:-ms-input-placeholder,
+.login input[type='password']:-ms-input-placeholder{
+    color: #fff;
+}
+
+/* ie */
+.login input[type='text'] input:-moz-placeholder,
+.login input[type='passwor'] input:-moz-placeholder{
+    color: #fff;
+}
+
+.login form {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 400px;
+    height: 300px;
+}
+
+.login .form-group {
+    position: relative;
+    border: 0;
+    margin-bottom: -20px;
+}
+
+nav.sidebar {
+    width: 100%;
+    position: fixed;
+    z-index: 5;
+    top:0;
+}
+
+nav.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background: #303641;
+    width: 100%;
+    height: 64px;
+}
+
+nav.sidebar ul > li{
+    float: left;
+    line-height: 64px;
+}
+
+nav.sidebar ul > li .fa {
     margin-right: 7px;
 }
-nav.sidebar ul > li > a{
+
+nav.sidebar ul > li > a {
+    font-size: 1.2em;
     display: block;
-    padding:10px 30px;
-    width:100%;
-    height:100%;
+    padding: 0 30px;
+    width: 100%;
+    height: 100%;
     color: #ccc;
     transition: all .3s linear;
     text-decoration: none;
-    border-bottom:1px solid rgba(69,74,84,0.4);
 }
 
-nav.sidebar ul > li > a:hover{
-    padding-left:45px;
+nav.sidebar ul > li > a:hover {
     color: #fff;
     background: #22262e;
 }
 
-nav.sidebar ul > li > ul{
-    max-height: 0;
+nav.sidebar ul > li > ul {
+    position: absolute;
     height: 0;
     overflow: hidden;
     transition: all .6s linear;
 }
-nav.sidebar ul > li:hover > ul{
+
+nav.sidebar ul > li:hover > ul {
     max-height: 999px;
-    height:100%;
+    height: auto;
     display: block;
+    width: auto;
 }
-nav.sidebar ul > li > ul > li > a{
+
+nav.sidebar ul > li > ul > li{
+    float: none;
+}
+nav.sidebar ul > li > ul > li{
+    line-height: 30px;
+}
+nav.sidebar ul > li > ul > li > a {
     padding: 10px 45px;
 }
-nav.sidebar ul > li > ul > li > a:hover{
-    padding: 10px 60px;
-}
-.main{
-    margin-left: 280px;
-    min-height:100%;
-    background: #fff;
-    padding:0px;
+
+.main {
+    min-height: 100%;
+    padding: 0;
     background: #F2F4F5;
 }
 
-.main_header{
+.main_header {
     text-align: center;
     padding: 0 20px;
     background: #448d58;
@@ -107,138 +226,187 @@ nav.sidebar ul > li > ul > li > a:hover{
     font-weight: 700;
 }
 
-.main_body{
-    padding: 0 5px;
+.main_body {
     overflow: hidden;
 }
 
-.module_title{
+.module_title {
     border-bottom: 0;
-    border-radius:5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
     padding: 10px 15px;
     font-size: 1.2em;
-    color:#fff;
+    color: #fff;
     font-weight: 700;
     background: #2C406C;
 }
-.module_toolbar{
-    padding:10px 15px;
-    background:#373737;
-    color:#fff;
+
+.module_toolbar {
+    padding: 10px 15px;
+    background: #373737;
+    color: #fff;
 }
-.module_content{
+
+.module_content {
     background: #fff;
 }
-.module_blue{
+
+.module_blue {
     background: #31728E;
 }
-.module_green{
+
+.module_green {
     background: #318E79;
 }
-.module_btn{
+
+.module_btn {
     margin-top: 8px;
 }
 
-.module{
+.module {
     clear: both;
     color: #666;
     margin-bottom: 15px;
 }
-.module > table{
+
+.module > table {
     width: 100%;
     background: #fff;
 }
 
-.module > table > tbody > tr:first-child > td{
+.module > table > thead > tr:first-child > td {
     background: #eee;
     border-top: 0;
 }
 
-.module > table > tbody > tr > td{
+.module > table > tbody > tr:hover {
+    background: #919798;
+    color: #efefef;
+}
+
+.module > table tr > td {
     border: 1px solid #ccc;
     padding: 8px 15px;
 }
 
-.module_body{
+.module_body {
     background: #fff;
-    border:1px solid #ccc;
+    border: 1px solid #ccc;
 }
 
-.module_body > form{
+.module_body > form {
     overflow: hidden;
 }
 
-.module_body > form label{
+.module_body > form label {
     padding-top: 5px;
     text-align: right;
 }
 
-.module_body > form input[type='text']{
-    border: 1px solid #eee;
-    padding:5px;
-    border-radius:5px;
+.module_body > form input[type='text'],
+.module_body > form input[type='password'] {
+    border: 1px solid #aaa;
+    padding: 5px;
+    border-radius: 5px;
 }
 
-.module_body > form input[type='file']{
-    width: 36%; 
+.module_body > form input[type='file'] {
+    width: 36%;
 }
 
-.module_body > form input[type='submit']{
-    margin: 15px 0; 
+.module_body > form input[type='submit'] {
+    margin: 15px 0;
 }
 
-.form-group{
+.form-group {
     margin-bottom: 0;
-    border-bottom:1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     overflow: hidden;
-    padding:15px 10px;
+    padding: 15px 10px;
 }
 
-.bg-success{
-    padding:10px 20px;
+.form-group select {
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+
+.bg-success {
+    padding: 10px 20px;
     font-weight: 700;
-    font-size:1.3em;
+    font-size: 1.3em;
 }
 
 /**DECORATIVE MODULES**/
-.tile{
-    border-radius:5px;
-    padding:15px;
+.tile {
+    border-radius: 5px;
+    padding: 15px;
     margin-bottom: 15px;
 }
-.tile_heading{
-    position: relative;
-    font-size:1.2em;
+
+.tile_row {
+    overflow: hidden;
 }
-.tile_icon{
+
+.tile_row_fixed {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding-top: 79px;
+    z-index: 3;
+    background: rgba(0, 0, 0, .7);
+}
+
+.tile_heading {
+    position: relative;
+    font-size: 1.2em;
+}
+
+.tile_icon {
     position: absolute;
     right: 0;
     font-size: 6rem;
     bottom: -25px;
     opacity: .7;
 }
-.tile_content{
-    font-size:3em;
+
+.tile_content {
+    font-size: 3em;
     font-weight: 700;
 }
 
-.tile_red{
+.tile_green {
+    background: #717171;
+    color: #efefef;
+}
+
+.tile_red {
     background: rgb(244, 100, 100);
     color: #efefef;
 }
 
-.tile_blue{
+.tile_blue {
     background: rgb(100, 162, 244);
-    color:#efefef;
+    color: #efefef;
 }
 
-.tile_orange{
+.tile_orange {
     background: rgb(244, 166, 100);
-    color:#efefef;
+    color: #efefef;
 }
 
-.chart_select{
-    color:#32C24A;
+.chart_select {
+    color: #32C24A;
     background: transparent;
-    margin-right:20px;
+    margin-right: 20px;
+}
+
+@media all and (max-width: 1024px) {
+    .col-xs-3 {
+        width: 25%;
+    }
+    .tile_icon{
+        display: none;
+    }
+
 }

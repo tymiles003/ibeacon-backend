@@ -5,9 +5,14 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"barryvdh/laravel-ide-helper": "~1.11"
+		"barryvdh/laravel-ide-helper": "~1.11",
+		"cboden/ratchet": "0.3.*",
+        "react/zmq": "0.2.*|0.3.*"
 	},
 	"autoload": {
+		"psr-0": {
+            "MyApp": "src"
+       	},
 		"classmap": [
 			"app/commands",
 			"app/controllers",

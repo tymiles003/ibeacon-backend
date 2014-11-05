@@ -12,7 +12,8 @@ return array(
 	| application. If disabled, a simple generic error page is shown.
 	|
 	*/
-
+    'port' => 9999,
+    'pport' => 5556,
 	'debug' => true,
 
 	/*
@@ -187,7 +188,7 @@ return array(
 		'Str'             => 'Illuminate\Support\Str',
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
-		'View'            => 'Illuminate\Support\Facades\View',
+		'View'            => 'Illuminate\Support\Facades\View'
 
 	),
 

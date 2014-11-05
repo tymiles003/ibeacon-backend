@@ -16,6 +16,7 @@
                             <tr>
                                 <td>Name</td>
                                 <td>Capacity</td>
+                                <td>Status</td>
                                 <td>Last Modified</td>
                                 <td>Action</td>
                             </tr>
@@ -23,9 +24,16 @@
                             <tr>
                                 <td>{{$queueType->name}}</td>
                                 <td>{{$queueType->capacity}}</td>
+                                <td>
+                                @if($queueType->disabled == 1)
+                                Close
+                                @else
+                                Open
+                                @endif
+                                </td>
                                 <td>{{$queueType->updated_at}}</td>
                                 <td>
-                                    <a href="/admin/table/{{$queueType->id}}"><button class="btn"><i class="fa fa-pencil"></i> Edit</button></a>
+                                    <a href="/admin/queue_type/{{$queueType->id}}"><button class="btn"><i class="fa fa-pencil"></i> Edit</button></a>
                                     <button id="delete_btn" data-id="{{$queueType->id}}" class="btn"><i class="fa fa-remove"></i> Delete</button>
                                 </td>
                             </tr>

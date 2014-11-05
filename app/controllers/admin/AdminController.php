@@ -2,7 +2,23 @@
 
 class AdminController extends \BaseController
 {
+    public function login()
+    {
+        return View::make('admin.login');
+    }
 
+    public function checkLogin()
+    {
+        if (Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password'))))
+        {
+            if(Auth::user()->right != 1){
+                return View::make('admin.login')->with('wrong', true);
+            }
+            return Redirect::to('admin/queue');
+        }else{
+            return View::make('admin.login')->with('wrong', true);
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +31,17 @@ class AdminController extends \BaseController
             $type = 1;
         }
         $currentNumber = Queues::currentNumber($type);
-        $queues = Queues::where('queue_type_id', '=', $type)->where('entered', '=', 0)->get()->sortBy('queue_number');
-        $maxQueueNumber = DB::table('queue')->where('queue_type_id', '=', $type)->max('queue_number');
+        $queues = Queues::where('queue_type_id', '=', $type)
+            ->where('cleared', '=', 0)
+            ->where(function ($query) {
+                $query->where('entered', '=', 0)
+                    ->orWhere('entered', '=', 1);
+            })
+            ->get()
+            ->sortBy('queue_number');
+        $maxQueueNumber = DB::table('queue')
+            ->where('queue_type_id', '=', $type)
+            ->max('queue_number');
         $response = array();
         $response['type'] = $type;
         $response['queues'] = $queues;
@@ -95,6 +120,52 @@ class AdminController extends \BaseController
         $table->fill($post_data);
         $table->save();
         return View::make('admin.table_edit')->with('table', $table)->with('message', 'Added successfully');
+    }
+
+    public function access()
+    {
+        $users = User::all();
+        $response = array();
+        $response['users'] = $users;
+        return View::make('admin.access')->with($response);
+    }
+
+    public function accessDetail()
+    {
+        if (Route::input('id') > 0) {
+            $user = User::find(Route::input('id'));
+            return View::make('admin.access_edit')->with('user', $user);
+        } else {
+            return View::make('admin.access_create');
+        }
+    }
+
+    public function accessEdit()
+    {
+        $user = User::find(Input::get('id'));
+        $user->email = Input::get('email');
+        $user->right = Input::get('right');
+        $password = Input::get('password');
+        if(!empty($password)) {
+            $user->password = Hash::make($password);
+        }
+        $user->save();
+        return View::make('admin.access_edit')->with('user', $user)->with('message', 'Edited successfully');
+    }
+
+    public function accessCreate()
+    {
+        $user = new User();
+        $user->email = Input::get('email');
+        $user->right = Input::get('right');
+        $user->password = Hash::make(Input::get('password'));
+        $user->save();
+        return View::make('admin.access_edit')->with('user', $user)->with('message', 'Added successfully');
+    }
+
+    public function accessDelete(){
+        $item = User::find(Route::input('id'));
+        $item->delete();
     }
 
     public function category()

@@ -20,18 +20,18 @@
     <body>
         <nav class="sidebar">
             <ul>
-                <li><a href="/admin"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-                <li><a href="/admin/queue"><i class="fa fa-users"></i>Queue</a>
+                <li><a href="/admin/queue_type"><i class="fa fa-dashboard"></i><span>Queue Type</span></a></li>
+                <li><a href="#"><i class="fa fa-users"></i><span>Queue</span></a>
                     <ul>
                         @foreach (QueueType::all() as $queuetype)
                         <li><a href="/admin/queue/{{$queuetype->id}}">
-                            <i class="fa fa-users"></i>{{ucfirst($queuetype->name)}}</a>
+                            <i class="fa fa-users"></i>
+                            <span>{{ucfirst($queuetype->name)}}</span></a>
                         </li>
                         @endforeach
                     </ul>
                 </li>
-                <li><a href="/admin/category"><i class="fa fa-folder"></i>Category</a></li>
-                <li><a href="/admin/item"><i class="fa fa-file"></i>item</a></li>
+                <li><a href="/admin/access"><i class="fa fa-key"></i><span>API Access</span></a></li>
             </ul>
         </nav>
         <div class="main">
