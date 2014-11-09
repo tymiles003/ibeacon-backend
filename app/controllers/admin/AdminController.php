@@ -2,6 +2,20 @@
 
 class AdminController extends \BaseController
 {
+    public function setting()
+    {
+        return View::make('admin.setting');
+    }
+
+    public function updateSetting()
+    {
+        foreach (Input::except('_token') as $key=>$value){
+            DB::table('setting')
+            ->where('key', $key)
+            ->update(array('value' => $value));
+        }
+        return View::make('admin.setting')->with('message', 'Edited successfully');
+    }
     public function login()
     {
         return View::make('admin.login');
@@ -20,10 +34,10 @@ class AdminController extends \BaseController
         }
     }
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
+    * Display a listing of the resource.
+    *
+    * @return Response
+    */
     public function queue()
     {
         $type = Route::input('type');
@@ -32,16 +46,17 @@ class AdminController extends \BaseController
         }
         $currentNumber = Queues::currentNumber($type);
         $queues = Queues::where('queue_type_id', '=', $type)
-            ->where('cleared', '=', 0)
-            ->where(function ($query) {
-                $query->where('entered', '=', 0)
-                    ->orWhere('entered', '=', 1);
-            })
-            ->get()
-            ->sortBy('queue_number');
+        ->where('cleared', '=', 0)
+        ->where(function ($query) {
+            $query->where('entered', '=', 0)
+            ->orWhere('entered', '=', 1);
+        })
+        ->get()
+        ->sortBy('queue_number');
         $maxQueueNumber = DB::table('queue')
-            ->where('queue_type_id', '=', $type)
-            ->max('queue_number');
+        ->where('queue_type_id', '=', $type)
+        ->where('cleared', '=', 0)
+        ->max('queue_number');
         $response = array();
         $response['type'] = $type;
         $response['queues'] = $queues;
@@ -56,6 +71,15 @@ class AdminController extends \BaseController
     {
         $response['type'] = Route::input('type');
         return View::make('admin.queue_stat')->with($response);
+    }
+
+    public function queueClear()
+    {
+        $type = Route::input('type');
+        DB::table('queue')
+        ->where('queue_type_id', '=', $type)
+        ->update(array('cleared' => 1));
+        return Redirect::to('admin/queue/'.$type);
     }
 
     public function queue_type()

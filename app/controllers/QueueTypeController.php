@@ -48,7 +48,8 @@ class QueueTypeController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+        $queueType = QueueType::find($id);
+        return Response::json($queueType);
 	}
 
 

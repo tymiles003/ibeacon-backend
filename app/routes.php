@@ -52,6 +52,10 @@ Route::get('bill/getBillByTableID/{id}', array('uses' => 'BillController@getBill
 Route::get('admin', array('uses' => 'AdminController@login'));
 Route::post('admin', array('uses' => 'AdminController@checkLogin'));
 Route::group(['before' => array('auth.basic', 'api')], function() {
+
+    Route::get('admin/setting', array('uses' => 'AdminController@setting'));
+    Route::post('admin/setting', array('uses' => 'AdminController@updateSetting'));
+
     Route::get('admin/queue_type', array('uses' => 'AdminController@queue_type'));
     Route::get('admin/queue_type/create', array('uses' => 'AdminController@queue_typeDetail'));
     Route::get('admin/queue_type/{id}', array('uses' => 'AdminController@queue_typeDetail'));
@@ -61,6 +65,7 @@ Route::group(['before' => array('auth.basic', 'api')], function() {
     Route::get('queues/listQueue', array('uses' => 'QueueController@listQueue'));
     Route::get('queues/listQueue/{id}/type/{type}', array('uses' => 'QueueController@listQueue'));
     Route::get('admin/queue/{type?}', array('uses' => 'AdminController@queue'));
+    Route::get('admin/queue/clear/{type}', array('uses' => 'AdminController@queueClear'));
     Route::get('admin/queue_stat/{type?}', array('uses' => 'AdminController@queueStat'));
 
     Route::get('admin/table', array('uses' => 'AdminController@table'));
@@ -86,4 +91,3 @@ Route::group(['before' => array('auth.basic', 'api')], function() {
     Route::post('admin/item', array('uses' => 'AdminController@itemCreate'));
     Route::post('admin/item/{id}', array('uses' => 'AdminController@itemEdit'));
 });
-

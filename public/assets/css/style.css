@@ -347,10 +347,18 @@ nav.sidebar ul > li > ul > li > a {
     overflow: hidden;
 }
 
+
+.header_fixed{
+    position: fixed;
+    width: 100%;
+    top: 64px;
+    left: 0;
+    z-index: 4;
+}
 .tile_row_fixed {
     position: fixed;
     width: 100%;
-    top: 0;
+    top: 50px;
     left: 0;
     padding-top: 79px;
     z-index: 3;
