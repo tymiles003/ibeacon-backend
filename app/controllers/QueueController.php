@@ -15,17 +15,7 @@ class QueueController extends \BaseController
     */
     public function index()
     {
-        $queue = Queues::find(250);
-        $queue->entered = 1;
-        $queue->save();
-        $queues = Queues::where('queue_type_id', '=', $queue->queue_type_id)
-        ->where('queue_number', '>=', 18)
-        ->where('cleared', '=', 0)
-        ->where('entered', '=', 0)
-        ->take(3)
-        ->get();
-        return $queues;
-
+        return;
     }
 
     public function entranceRate()
@@ -179,10 +169,9 @@ class QueueController extends \BaseController
         if (isset($type)) {
             return Queues::totalQueue($type);
         } else {
-            $count = QueueType::count();
             $response = array();
-            for ($i = 1; $i <= $count; $i++) {
-                $response[$i] = Queues::totalQueue($i);
+            foreach (QueueType::all() as $queueType) {
+                $response[$queueType->id] = Queues::totalQueue($queueType->id);
             }
             return Response::json($response);
         }
@@ -241,6 +230,14 @@ class QueueController extends \BaseController
             ->id;
         }
         $queue->queue_type_id = $type;
+        //check whether queue is open
+        if (QueueType::find($type)->disabled == 1){
+            $response = array();
+            $response['status'] = 'ERROR';
+            $response['code'] = 500;
+            $response['debug'] = 'The queue is closed';
+            return Response::json($response);
+        }
         $identifier = Input::get('identifier');
         if (isset($identifier)) {
             $queue->identifier = $identifier;
@@ -262,10 +259,9 @@ class QueueController extends \BaseController
         $entryData['totalQueue'] = Queues::totalQueue($queue->queue_type_id);
         $context = new ZMQContext();
         $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
-        $socket->connect("tcp://localhost:".Config::get('app.pport'));
+        $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
         $socket->send(json_encode($entryData));
         /**end of websocket stuff**/
-
         return $queue->toJson();
     }
 
@@ -279,6 +275,13 @@ class QueueController extends \BaseController
     public function show($id)
     {
         $queue = Queues::find($id);
+        if(!$queue){
+            $response = array();
+            $response['status'] = 'ERROR';
+            $response['code'] = 500;
+            $response['debug'] = 'No such ticket';
+            return Response::json($response);
+        }
         return $queue->toJson();
     }
 
@@ -306,8 +309,32 @@ class QueueController extends \BaseController
         $entered = Input::get('entered');
         if (isset($entered)) { //the user enters a place
             $queue = Queues::find($id);
-            $queue->entered = 2;
-            $queue->save();
+            $pastEntered = $queue->entered;
+            $queue->entered = $entered;
+            if($pastEntered != 2){
+                $queue->save();
+                //websocket message
+                if($entered == 2){
+                    $entryData = array();
+                    $entryData['action'] = 'entered';
+                    $entryData['id'] = $queue->id;
+                    $entryData['type'] = $queue->queue_type_id;
+                    $entryData['totalQueue'] = Queues::totalQueue($queue->queue_type_id);
+                    $context = new ZMQContext();
+                    $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+                    $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
+                    $socket->send(json_encode($entryData));
+                }else{
+                    $entryData = array();
+                    $entryData['action'] = 'abandon';
+                    $entryData['id'] = $queue->id;
+                    $entryData['type'] = $queue->queue_type_id;
+                    $context = new ZMQContext();
+                    $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+                    $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
+                    $socket->send(json_encode($entryData));
+                }
+            }
         } else {  //just for dequeue(announcing the number)
             $queue = Queues::find($id);
             $query = DB::table('pushmessage')->where('identifier', '=', $queue->identifier);
@@ -315,15 +342,14 @@ class QueueController extends \BaseController
             $queue->entered = 1;
             $queue->save();
 
-
             /**web socket stuff**/
             $entryData = array();
             $entryData['action'] = 'dequeue';
+            $entryData['id'] = $queue->id;
             $entryData['type'] = $queue->queue_type_id;
-            $entryData['number'] = $queue->queue_number;
             $context = new ZMQContext();
             $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
-            $socket->connect("tcp://localhost:".Config::get('app.pport'));
+            $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
             $socket->send(json_encode($entryData));
             /**end of websocket stuff**/
 
@@ -331,7 +357,7 @@ class QueueController extends \BaseController
             //if display number, then send notification
             if (count($query) > 0) {
                 $data = array();
-                $data['message'] = "Pizza Hut: It is your number";
+                $data['message'] = Setting::getName().": It is your number";
                 $data['identifiers'] = array($queue->identifier);
                 $data_string = json_encode($data);
                 $this->sendPushNotification($data_string);
@@ -339,10 +365,11 @@ class QueueController extends \BaseController
             $queues = Queues::where('queue_type_id', '=', $queue->queue_type_id)
             ->where('queue_number', '>', $queue->queue_number)
             ->where('cleared', '=', 0)
+            ->where('entered', '=', 0)
             ->take(5)
             ->get();
             $data = array();
-            $data['message'] = "Pizza Hut: the number is " . $queue->queue_number;
+            $data['message'] = Setting::getName().": the number is " . $queue->queue_number;
             $data['identifiers'] = array();
             foreach ($queues as $tqueue) {
                 array_push($data['identifiers'], $tqueue->identifier);
@@ -352,36 +379,41 @@ class QueueController extends \BaseController
 
 
             //if display number, then send notification
-            $data = array();
-            $data['message'] = "Pizza Hut: It is your number";
-            $data['identifiers'] = array($queue->identifier);
-            $data_string = json_encode($data);
-            $ch = curl_init('http://mall/sendMessage');
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data_string))
-            );
-            curl_exec($ch);
+            $mallURL = Setting::getMallSystem();
+            if(!empty($mallURL)){
+                $data = array();
+                $data['message'] = Setting::getName().": It is your number";
+                $data['identifiers'] = array($queue->identifier);
+                $data_string = json_encode($data);
+                $ch = curl_init($mallURL.'/sendMessage');
+                curl_setopt($ch, CURLOPT_USERPWD, Setting::getMallUser().":".Setting::getMallpw());
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($data_string))
+                );
+                curl_exec($ch);
 
-            $data = array();
-            $data['message'] = "Pizza Hut: the number is " . $queue->queue_number;
-            $data['identifiers'] = array();
-            foreach ($queues as $tqueue) {
-                array_push($data['identifiers'], $tqueue->identifier);
+                $data = array();
+                $data['message'] = Setting::getName().": the number is " . $queue->queue_number;
+                $data['identifiers'] = array();
+                foreach ($queues as $tqueue) {
+                    array_push($data['identifiers'], $tqueue->identifier);
+                }
+                $data_string = json_encode($data);
+                $ch = curl_init($mallURL.'/sendMessage');
+                curl_setopt($ch, CURLOPT_USERPWD, Setting::getMallUser().":".Setting::getMallpw());
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($data_string))
+                );
+                curl_exec($ch);
             }
-            $data_string = json_encode($data);
-            $ch = curl_init('http://mall/sendMessage');
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data_string))
-            );
-            curl_exec($ch);
         }
         return 0;
     }
@@ -413,14 +445,15 @@ class QueueController extends \BaseController
             'sound' => 'default'
         );
         $payload = json_encode($body);
-        $tokens = DB::table('pushmessage')
-        ->whereIn('identifier', $identifiers)->get();
-        foreach ($tokens as $token) {
-            $msg = chr(0) . pack('n', 32) . pack('H*', $token->token) . pack('n', strlen($payload)) . $payload;
-            $result = fwrite($fp, $msg, strlen($msg));
+        if(count($identifiers) > 0){
+            $tokens = DB::table('pushmessage')
+            ->whereIn('identifier', $identifiers)->get();
+            foreach ($tokens as $token) {
+                $msg = chr(0) . pack('n', 32) . pack('H*', $token->token) . pack('n', strlen($payload)) . $payload;
+                $result = fwrite($fp, $msg, strlen($msg));
+            }
         }
         fclose($fp);
-        return 0;
     }
 
     /**

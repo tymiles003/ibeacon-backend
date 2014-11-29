@@ -1,10 +1,11 @@
 <?php
     require realpath(dirname(__FILE__)).'/bootstrap/autoload.php';
     require_once realpath(dirname(__FILE__)).'/bootstrap/start.php';
-    $port = Config::get('app.port');
-    $pport = Config::get('app.pport');
     require realpath(dirname(__FILE__)).'/vendor/autoload.php';
 	require realpath(dirname(__FILE__)).'/src/chat.php';
+    require realpath(dirname(__FILE__)).'/app/models/Setting.php';
+    $port = Setting::getPort();
+    $pport = Setting::getPPort();
     use Ratchet\Server\IoServer;
     use Ratchet\Http\HttpServer;
     use Ratchet\WebSocket\WsServer;

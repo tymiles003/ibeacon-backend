@@ -70,6 +70,14 @@ a, a:hover, a:focus {
     background: rgba(252, 70, 70, 0.56);
     padding: 15px;
 }
+.login .success{
+    margin: 0 10px;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(33, 215, 125, 0.72);
+    padding: 15px;
+}
 .login label {
     position: absolute;
     float: left;
@@ -90,7 +98,7 @@ a, a:hover, a:focus {
     font-size: 1.3em;
 }
 
-.login input[type='submit']{
+.login input[type='submit'], .login .btn{
     width: 100%;
     border-radius: 0;
     font-size: 1.3em;
@@ -126,7 +134,7 @@ a, a:hover, a:focus {
     color: #fff;
 }
 
-.login form {
+.login form, .login .finish {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -410,6 +418,9 @@ nav.sidebar ul > li > ul > li > a {
 }
 
 @media all and (max-width: 1024px) {
+    form .col-xs-3{
+        width: 45%;
+    }
     .col-xs-3 {
         width: 25%;
     }

@@ -107,42 +107,71 @@
 
 @section('script')
 <script>
-var conn = new WebSocket('ws://localhost:<?=Config::get('app.port')?>');
-conn.onopen = function(e) {
-    console.log("Connection established!");
-};
+    var conn = new WebSocket('ws://<?=Setting::getIP()?>:<?=Setting::getPort()?>'),
+    maxID = {{$maxQueueNumber}},
+    type = {{$type}};
+    conn.onopen = function(e) {
+        console.log("Connection established!");
+    };
 
-conn.onmessage = function(e) {
-    var data = $.parseJSON( e.data );
-    console.log(data);
-    if(data.action === 'enqueue'){
-        $('table').append("<tr><td>"+data.number+"</td><td>"+data.people+"</td><td><span id='entered_"+data.id+"'>Waiting</span></td><td>"+data.created_at.date+"</td><td><button id='"+data.id+"' class='btn dequeue'>Dequeue</button></td></tr>");
-        $('#no_of_queues').html(data.totalQueue);
+    conn.onmessage = function(e) {
+        var data = $.parseJSON( e.data );
+        console.log(data);
+        if(data.action === 'enqueue'){
+            if(parseInt(data.type) === type){
+                $('table').append("<tr><td>"+data.number+"</td><td>"+data.people+"</td><td><span id='entered_"+data.id+"'>Waiting</span></td><td>"+data.created_at.date+"</td><td><button id='"+data.id+"' class='btn dequeue'>Dequeue</button></td></tr>");
+                $('#no_of_queues').html(data.totalQueue);
+            }
+        }else if(data.action === 'entered'){
+            if(parseInt(data.type) === type){
+                $('#'+data.id).attr("disabled", true);
+                var targetID = "#entered_"+data.id;
+                $(targetID).html('<b>Entered</b>');
+                getCurrentNumber();
+                getWaitingTime();
+                getTotalQueue();
+            }
+        }else if(data.action === 'dequeue'){
+            if(parseInt(data.type) === type){
+                $('#'+data.id).html('Enter').removeClass('dequeue').addClass('enter');
+                var targetID = "#entered_"+data.id;
+                $(targetID).html('<b>Dequeued</b>');
+                getCurrentNumber();
+                getWaitingTime();
+                getTotalQueue();
+            }
+        }else if(data.action === 'abandon'){
+            if(parseInt(data.type) === type){
+                $('#'+data.id).attr("disabled", true);
+                var targetID = "#entered_"+data.id;
+                $(targetID).html('<b>Abandoned</b>');
+                getCurrentNumber();
+                getWaitingTime();
+                getTotalQueue();
+            }
+        }
+    };
+    function getWaitingTime(){
+        $.get( "/queues/waitingTime/"+type, function(data) {
+            $('#avg_time').html(data.time+" s");
+        });
     }
-};
-maxID = {{$maxQueueNumber}};
-type = {{$type}};
-function getWaitingTime(){
-    $.get( "/queues/waitingTime/"+type, function(data) {
-        $('#avg_time').html(data.time+" s");
-    });
-}
-function getCurrentNumber(){
-    $.get( "/queues/currentNumber/", function(data) {
-        $('#currentNumber').html(data[type]);
-    });
-}
-function getTotalQueue(){
-    $.get( "/queues/totalQueue/"+type, function(data) {
-        $('#no_of_queues').html(data);
-    });
-}
-/*
-function refreshQueue(number){
-$.get( "/queues/listQueue/"+number+"/type/"+type, function( data ) {
-for(i=0;i<data.length;i++){
-temp = data[i];
-$('table').append("<tr><td>"+temp.queue_number+"</td><td>"+temp.no_of_people+"</td><td><span id='entered_"+temp.id+"'>Waiting</span></td><td>"+temp.created_at+"</td><td><button id='"+temp.id+"' class='btn'>Enter</button></td></tr>");
+    function getCurrentNumber(){
+        $.get( "/queues/currentNumber/", function(data) {
+            $('#currentNumber').html(data[type]);
+        });
+    }
+    function getTotalQueue(){
+        $.get( "/queues/totalQueue/"+type, function(data) {
+            $('#no_of_queues').html(data);
+        });
+    }
+    /*
+    function refreshQueue(number){
+    $.get( "/queues/listQueue/"+number+"/type/"+type, function( data ) {
+    for(i=0;i<data.length;i++){
+    temp = data[i];
+    $('table').append("<tr><td>"+temp.queue_number+"</td><td>"+temp.no_of_people+"</td><td><span id='entered_"+temp.id+"'>Waiting</span></td><td>"+temp.created_at+"</td><td><button id='"+temp.id+"' class='btn'>Enter</button></td></tr>");
 }
 if(data.length >= 1){
 maxID = data[i-1].queue_number;
@@ -162,14 +191,6 @@ $(document).ready(function($) {
         $.ajax({
             url: "/queue/"+thisID,
             type: "PUT"
-        }).done(function(){
-            $this.html('Enter');
-            $this.removeClass('dequeue').addClass('enter');
-            var targetID = "#entered_"+thisID;
-            $(targetID).html('<b>Dequeued</b>');
-            getCurrentNumber();
-            getWaitingTime();
-            getTotalQueue();
         });
     });
     $('body').on('click', 'button.enter', function(){
@@ -179,24 +200,20 @@ $(document).ready(function($) {
             url: "/queue/"+thisID,
             type: "PUT",
             data: { entered : 2 }
-        }).done(function(){
-            $this.attr("disabled", true);
-            var targetID = "#entered_"+thisID;
-            $(targetID).html('<b>Entered</b>');
-            getCurrentNumber();
-            getWaitingTime();
-            getTotalQueue();
         });
     });
 });
 
+var offset = 60;
 $(window).scroll(function(event){
-    if($(window).scrollTop() > 35){
+    if($(window).scrollTop() >= offset){
         $('.main_header').addClass('header_fixed');
         $('.tile_row').addClass('tile_row_fixed');
+        offset = 0;
     }else{
         $('.main_header').removeClass('header_fixed');
         $('.tile_row').removeClass('tile_row_fixed');
+        offset = 60;
     }
 })
 </script>

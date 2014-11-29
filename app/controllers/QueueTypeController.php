@@ -13,6 +13,7 @@ class QueueTypeController extends \BaseController {
             ->orderBy('capacity', 'ASC')->get();
         foreach($queueTypes as $queueType){
             $queueType->count = Queues::totalQueue($queueType->id);
+			$queueType->currentno = Queues::currentNumber($queueType->id);
         }
         return Response::json($queueTypes);
 	}
@@ -49,6 +50,15 @@ class QueueTypeController extends \BaseController {
 	public function show($id)
 	{
         $queueType = QueueType::find($id);
+		if(!$queueType){
+			$response = array();
+			$response['status'] = 'ERROR';
+			$response['code'] = 500;
+			$response['debug'] = 'No such queue type';
+			return Response::json($response);
+		}
+		$queueType->currentno = Queues::currentNumber($id);
+		$queueType->count = Queues::totalQueue($id);
         return Response::json($queueType);
 	}
 

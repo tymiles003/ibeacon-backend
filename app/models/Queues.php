@@ -68,6 +68,7 @@ class Queues extends Eloquent
             ->where('queue_type_id', '=', $type)
             ->where('cleared', '=', 0)
             ->where('entered', '>', 0)
+            ->where('entered', '<', 3)
             ->first();
         if (!$currentNumber->number) {
             $currentNumber = 0;

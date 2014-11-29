@@ -32,6 +32,30 @@
                         {{ Form::label('beaconminor', 'Beacon minor', array('class' => 'col-xs-3')) }}
                         {{ Form::text('beaconminor', Setting::getMinor(), array('class' => 'col-xs-3')) }}
                     </div>
+                    <div class="form-group">
+                        {{ Form::label('mallsystem', 'Mall System URL', array('class' => 'col-xs-3')) }}
+                        {{ Form::text('mallsystem', Setting::getMallSystem(), array('class' => 'col-xs-3')) }}
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('malluser', 'Mall API Username', array('class' => 'col-xs-3')) }}
+                        {{ Form::text('malluser', Setting::getMallUser(), array('class' => 'col-xs-3')) }}
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('mallpw', 'Mall API Password', array('class' => 'col-xs-3')) }}
+                        {{ Form::password('mallpw', array('class' => 'col-xs-3')) }}
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('ip', 'IP', array('class' => 'col-xs-3')) }}
+                        {{ Form::text('ip', Setting::getIP(), array('class' => 'col-xs-3')) }}
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('port', 'Websocket Port', array('class' => 'col-xs-3')) }}
+                        {{ Form::text('port', Setting::getPort(), array('class' => 'col-xs-3')) }}
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('pport', 'ZeroMQ Port', array('class' => 'col-xs-3')) }}
+                        {{ Form::text('pport', Setting::getPPort(), array('class' => 'col-xs-3')) }}
+                    </div>
                     <div class="col-xs-3">
                     </div>
                     <div class="col-xs-4">

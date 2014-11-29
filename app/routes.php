@@ -1,5 +1,116 @@
 <?php
 
+//installation
+Route::get('install', function(){
+    return View::make('install');
+});
+
+Route::post('install', function(){
+    $config_path = app_path()."/config";
+    $default_file = $config_path."/database_default.php";
+    $output_file = $config_path."/database.php";
+    $dbname = Input::get('dbname');
+    $dbuser = Input::get('dbuser');
+    $dbpw = Input::get('dbpw');
+    try{
+        $db = new PDO('mysql:host=localhost;dbname='.$dbname.';charset=utf8', $dbuser, $dbpw, array(PDO::ATTR_EMULATE_PREPARES => false,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        $sth = $db->prepare("DROP TABLE IF EXISTS `pushmessage`");
+        $sth->execute();
+        $sth = $db->prepare("
+        CREATE TABLE IF NOT EXISTS `pushmessage` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `identifier` text NOT NULL,
+        `token` text NOT NULL,
+        `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=0");
+        $sth->execute();
+        $sth = $db->prepare("DROP TABLE IF EXISTS `queue`");
+        $sth->execute();
+        $sth = $db->prepare("
+        CREATE TABLE IF NOT EXISTS `queue` (
+        `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+        `queue_number` int(11) NOT NULL,
+        `queue_type_id` int(11) NOT NULL,
+        `identifier` text NOT NULL,
+        `no_of_people` int(11) NOT NULL,
+        `member_id` int(11) DEFAULT NULL,
+        `entered` tinyint(4) NOT NULL DEFAULT '0',
+        `cleared` int(11) NOT NULL DEFAULT '0',
+        `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+        `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0");
+        $sth->execute();
+        $sth = $db->prepare("DROP TABLE IF EXISTS `queue_type`");
+        $sth->execute();
+        $sth = $db->prepare("
+        CREATE TABLE IF NOT EXISTS `queue_type` (
+        `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+        `name` varchar(255) NOT NULL,
+        `capacity` int(1) NOT NULL,
+        `disabled` int(11) NOT NULL DEFAULT '1',
+        `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+        `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0");
+        $sth->execute();
+        $sth = $db->prepare("DROP TABLE IF EXISTS `setting`");
+        $sth->execute();
+        $sth = $db->prepare("
+        CREATE TABLE IF NOT EXISTS `setting` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `key` text NOT NULL,
+        `value` text NOT NULL,
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0");
+        $sth->execute();
+        $sth = $db->prepare("DROP TABLE IF EXISTS `user`");
+        $sth->execute();
+        $sth = $db->prepare("
+        CREATE TABLE IF NOT EXISTS `user` (
+        `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+        `firstname` varchar(255) NOT NULL,
+        `lastname` varchar(255) NOT NULL,
+        `email` text NOT NULL,
+        `right` int(11) NOT NULL,
+        `password` text NOT NULL,
+        `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+        `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0");
+        $sth->execute();
+        $sth = $db->prepare("
+        INSERT INTO `setting` (`id`, `key`, `value`) VALUES
+        (1, 'sitename', 'Pizza Hut'),
+        (2, 'uuid', '657A6D10-6492-4FA5-938D-DDEEAFACC3D6'),
+        (3, 'beaconmajor', '1'),
+        (4, 'beaconminor', '1'),
+        (5, 'ip', 'localhost'),
+        (6, 'port', '9999'),
+        (7, 'pport', '5555'),
+        (8, 'mallsystem', ''),
+        (9, 'malluser', ''),
+        (10, 'mallpw', '')");
+        $sth->execute();
+        shell_exec("cp ".escapeshellarg($default_file)." ".escapeshellarg($output_file));
+        shell_exec('sed -i "" "s/\[dbname\]/'.$dbname.'/" '.$output_file);
+        shell_exec('sed -i "" "s/\[dbuser\]/'.$dbuser.'/" '.$output_file);
+        shell_exec('sed -i "" "s/\[dbpw\]/'.$dbpw.'/" '.$output_file);
+        $user = new User();
+        $user->email = Input::get('user');
+        $user->right = '1';
+        $user->password = Hash::make(Input::get('pw'));
+        $user->save();
+        return View::make('finish');
+    }
+    catch(PDOException $ex){
+        return View::make('install')->with('wrong', true);
+    }
+
+});
 
 //api authentication
 Route::filter('api', function () {
@@ -12,32 +123,51 @@ Route::filter('api', function () {
     }
 });
 
+
 //queue settings route
-Route::get('setting/getUUID', function () {
-    $uuid = DB::table('queue_setting')->where('key', '=', 'uuid')->first();
-    $major = DB::table('queue_setting')->where('key', '=', 'major')->first();
-    $minor = DB::table('queue_setting')->where('key', '=', 'minor')->first();
-    $ip = DB::table('queue_setting')->where('key', '=', 'ip')->first();
-    $port = DB::table('queue_setting')->where('key', '=', 'port')->first();
+Route::get('setting/beacon', function () {
+    $uuid = DB::table('setting')->where('key', '=', 'uuid')->first();
+    $major = DB::table('setting')->where('key', '=', 'beaconmajor')->first();
+    $minor = DB::table('setting')->where('key', '=', 'beaconminor')->first();
     $response = array();
     $response['uuid'] = $uuid->value;
     $response['major'] = $major->value;
     $response['minor'] = $minor->value;
-    $response['ip'] = $ip->value;
-    $response['port'] = $port->value;
     return Response::json($response);
 });
 
 
+
 //normal routes
 Route::group(['before' => array('auth.basic', 'api')], function() {
+    Route::any('registerDevice', function(){
+        $deviceToken = Input::get('deviceToken');
+        if(!isset($deviceToken)){
+            $response = array();
+            $response['status'] = 'ERROR';
+            $response['code'] = 500;
+            $response['debug'] = 'Wrong parameters';
+            return Response::json($response);
+        }
+        $token = str_replace(' ', '', $deviceToken);
+        $token = str_replace('<', '', $token);
+        $token = str_replace('>', '', $token);
+        $identifier = hash('sha256', $token);
+        $device = DB::table('pushmessage')->where('token', $token)->get(); //check existence
+        if(count($device) == 0) { //insert an record if it does not exist
+            DB::table('pushmessage')->insert(array('token' => $token, 'identifier' => $identifier));
+        }
+        $response = array();
+        $response['identifier'] = $identifier;
+        return Response::json($response);
+    });
     Route::resource('queue', 'QueueController');
     Route::resource('queueType', 'QueueTypeController');
+    Route::resource('user', 'UserController');
 });
 
 Route::resource('item', 'ItemController');
 Route::resource('category', 'CategoryController');
-Route::resource('user', 'UserController');
 
 
 Route::get('queues/avgWaitingTime/{type}/year/{year}/month/{month}', array('uses' => 'QueueController@avgWaitingTime'));
@@ -55,6 +185,9 @@ Route::group(['before' => array('auth.basic', 'api')], function() {
 
     Route::get('admin/setting', array('uses' => 'AdminController@setting'));
     Route::post('admin/setting', array('uses' => 'AdminController@updateSetting'));
+
+    Route::get('admin/shop', array('uses' => 'AdminController@shopDetail'));
+    Route::post('admin/shop', array('uses' => 'AdminController@shopEdit'));
 
     Route::get('admin/queue_type', array('uses' => 'AdminController@queue_type'));
     Route::get('admin/queue_type/create', array('uses' => 'AdminController@queue_typeDetail'));

@@ -12,6 +12,10 @@ return array(
 	| application. If disabled, a simple generic error page is shown.
 	|
 	*/
+    'mallsystem' => 'http://mall.andymok.me',  //no slash at the end
+    'malluser' => 'baalmok@gmail.com',
+    'mallpw' => 'b',
+    'ip' => 'localhost',
     'port' => 9999,
     'pport' => 5556,
 	'debug' => true,

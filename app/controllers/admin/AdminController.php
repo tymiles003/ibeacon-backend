@@ -2,6 +2,73 @@
 
 class AdminController extends \BaseController
 {
+
+    public function shopDetail()
+    {
+        $ch = curl_init(Setting::getMallSystem().'/category');
+        curl_setopt($ch, CURLOPT_USERPWD, Setting::getMallUser().":".Setting::getMallpw());
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $cats = json_decode($result);
+        foreach ($cats as $cat) {
+            $catOption[$cat->id] = $cat->catname;
+        }
+        $ch = curl_init(Setting::getMallSystem().'/shop/1');
+        curl_setopt($ch, CURLOPT_USERPWD, Setting::getMallUser().":".Setting::getMallpw());
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $shop = json_decode($result);
+        return View::make('admin.shop')->with('catOption', $catOption)->with('shop', $shop);
+    }
+
+    public static function http_build_query_for_curl($arrays, &$new = array(), $prefix = null)
+    {
+        if (is_object($arrays)) {
+            $arrays = get_object_vars($arrays);
+        }
+
+        foreach ($arrays AS $key => $value) {
+            $k = isset($prefix) ? $prefix . '[' . $key . ']' : $key;
+            if (is_array($value) OR is_object($value)) {
+                http_build_query_for_curl($value, $new, $k);
+            } else {
+                $new[$k] = $value;
+            }
+        }
+    }
+    public function shopEdit()
+    {
+        $data_string = json_encode(Input::all());
+        if (!empty($_FILES)) {
+            //debug ($_FILES);
+            //debug ($curl_post_data);
+            //debug(realpath('./post.php'));
+            //debug (realpath($_FILES[]);
+            foreach ($_FILES as $key=>$_FILE) {
+                if (!empty($_FILE['name'])) {
+                    $_POST[$key] = '@'.$_FILE['tmp_name'].';filename='.$_FILE['name'];
+                }
+            }
+        }
+        AdminController::http_build_query_for_curl($_POST, $newArray);
+        $ch = curl_init(Setting::getMallSystem().'/shop/1');
+        curl_setopt($ch, CURLOPT_USERPWD, Setting::getMallUser().":".Setting::getMallpw());
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: multipart/form-data'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($_POST));
+        $post = array('name'=>'ss','logo'=>'@/Users/frmok26/Documents/mall/public/assets/shop/s.jpg');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $newArray);
+        $result = curl_exec($ch);
+        curl_close ($ch);
+        return http_build_query($_POST);
+    }
+
     public function setting()
     {
         return View::make('admin.setting');
@@ -10,6 +77,10 @@ class AdminController extends \BaseController
     public function updateSetting()
     {
         foreach (Input::except('_token') as $key=>$value){
+            Cache::forget($key);
+            if($key == 'mallpw' && empty($value)){
+                continue;
+            }
             DB::table('setting')
             ->where('key', $key)
             ->update(array('value' => $value));
@@ -28,7 +99,7 @@ class AdminController extends \BaseController
             if(Auth::user()->right != 1){
                 return View::make('admin.login')->with('wrong', true);
             }
-            return Redirect::to('admin/queue');
+            return Redirect::to('admin/setting');
         }else{
             return View::make('admin.login')->with('wrong', true);
         }
@@ -106,6 +177,7 @@ class AdminController extends \BaseController
         $queueType = new QueueType();
         $post_data = Input::all();
         $queueType->fill($post_data);
+        $queueType->disabled = 1;
         $queueType->save();
         return View::make('admin.queue_type_edit')->with('queueType', $queueType)->with('message', 'Added successfully');
     }
