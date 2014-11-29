@@ -25,6 +25,10 @@
                         {{ Form::label('password', 'Password', array('class' => 'col-xs-3')) }}
                         {{ Form::password('password', array('class' => 'col-xs-3')) }}
                     </div>
+                    <div class="form-group">
+                        {{ Form::label('right', 'Right', array('class' => 'col-xs-3')) }}
+                        {{ Form::select('right', array('1' => 'Administrator', '2' => 'API Access')) }}
+                    </div>
                     <div class="col-xs-3">
                     </div>
                     <div class="col-xs-4">

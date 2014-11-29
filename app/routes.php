@@ -95,10 +95,7 @@ Route::post('install', function(){
         (9, 'malluser', ''),
         (10, 'mallpw', '')");
         $sth->execute();
-        shell_exec("cp ".escapeshellarg($default_file)." ".escapeshellarg($output_file));
-        shell_exec('sed -i "" "s/\[dbname\]/'.$dbname.'/" '.$output_file);
-        shell_exec('sed -i "" "s/\[dbuser\]/'.$dbuser.'/" '.$output_file);
-        shell_exec('sed -i "" "s/\[dbpw\]/'.$dbpw.'/" '.$output_file);
+        shell_exec('sed -e "s/\[dbname\]/'.$dbname.'/" -e "s/\[dbuser\]/'.$dbuser.'/" -e "s/\[dbpw\]/'.$dbpw.'/" '. $default_file. ' > '. $output_file);
         $user = new User();
         $user->email = Input::get('user');
         $user->right = '1';
