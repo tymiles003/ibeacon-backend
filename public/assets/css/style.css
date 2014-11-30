@@ -92,6 +92,7 @@ a, a:hover, a:focus {
     width: 100%;
     background: transparent;
     border: 0;
+    border-radius:0;
     padding: 9px 50px;
     border-bottom: 1px solid #fff;
     color: #fff;
@@ -193,6 +194,7 @@ nav.sidebar ul > li > a:hover {
 }
 
 nav.sidebar ul > li > ul {
+    width: auto;
     position: absolute;
     height: 0;
     overflow: hidden;
@@ -203,7 +205,6 @@ nav.sidebar ul > li:hover > ul {
     max-height: 999px;
     height: auto;
     display: block;
-    width: auto;
 }
 
 nav.sidebar ul > li > ul > li{
