@@ -141,14 +141,7 @@ $(document).ready(function() {
         smooth: false,
         resize: true
     });
-    var graph3 = new Morris.Bar({
-        element: 'myfirstchart3',
-        data: [],
-        xkey: 'hour',
-        ykeys: ['value'],
-        labels: ['Ticket'],
-        resize: true
-    });
+
     $.get( "/queues/avgWaitingTime/"+type+"/year/"+currentYear+"/month/"+currentMonth, function( data ) {
         graph.setData(data);
     });
@@ -156,7 +149,17 @@ $(document).ready(function() {
         graph2.setData(data);
     });
     $.get( "/queues/usage/"+type+"/year/"+currentYear+"/month/"+currentMonth+"/day/"+currentDay, function( data ) {
-        graph3.setData(data);
+        if(data.length > 0){
+            var graph3 = new Morris.Bar({
+                element: 'myfirstchart3',
+                data: [],
+                xkey: 'hour',
+                ykeys: ['value'],
+                labels: ['Ticket'],
+                resize: true
+            });
+            graph3.setData(data);
+        }
     });
 
     $('#year_select_1').change(function(){
