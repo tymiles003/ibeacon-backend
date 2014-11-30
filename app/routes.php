@@ -167,6 +167,7 @@ Route::resource('item', 'ItemController');
 Route::resource('category', 'CategoryController');
 
 
+Route::get('queues/usage/{type}/year/{year}/month/{month}/day/{day}', array('uses' => 'QueueController@usage'));
 Route::get('queues/avgWaitingTime/{type}/year/{year}/month/{month}', array('uses' => 'QueueController@avgWaitingTime'));
 Route::get('queues/entranceRate/{type}/year/{year}/month/{month}', array('uses' => 'QueueController@entranceRate'));
 Route::get('queues/waitingTime/{type}', array('before'=> array('auth.basic', 'api'), 'uses' => 'QueueController@waitingTime'));

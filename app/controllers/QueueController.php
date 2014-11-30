@@ -18,6 +18,45 @@ class QueueController extends \BaseController
         return;
     }
 
+
+    public function usage()
+    {;
+        $year = Route::input('year');
+        $month = Route::input('month');
+        $day = Route::input('day');
+        $avg_time = DB::table('queue')
+        ->select(DB::raw('COUNT(1) as value, DATE_FORMAT(created_at, "%k") as hour'))
+        ->where(DB::raw('YEAR(created_at)'), '=', $year)
+        ->where(DB::raw('MONTH(created_at)'), '=', $month)
+        ->where(DB::raw('DAY(created_at)'), '=', $day)
+        ->where('queue_type_id', '=', Route::input('type'))
+        ->groupBy(DB::raw('YEAR(created_at)'))
+        ->groupBy(DB::raw('MONTH(created_at)'))
+        ->groupBy(DB::raw('DAY(created_at)'))
+        ->groupBy(DB::raw('HOUR(created_at)'))
+        ->get();
+        $i = 0;
+        $j = 0;
+        $previous_record = array();
+        $response = array();
+        if(count($avg_time) == 0){
+            return Response::json($response);
+        }
+        for($i = 0; $i < 24; $i++)
+        {
+            $row['hour'] = $i;
+            $row['value'] = 0;
+            foreach($avg_time as $record){
+                if($record->hour == $i){
+                    $row['hour'] = $record->hour+0;
+                    $row['value'] = $record->value+0;
+                    break;
+                }
+            }
+            array_push($response, $row);
+        }
+        return Response::json($response);
+    }
     public function entranceRate()
     {
         $year = Route::input('year');

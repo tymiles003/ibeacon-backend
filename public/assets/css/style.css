@@ -266,6 +266,10 @@ nav.sidebar ul > li > ul > li > a {
     background: #318E79;
 }
 
+.module_white {
+    background: #fff;
+}
+
 .module_btn {
     margin-top: 8px;
 }
