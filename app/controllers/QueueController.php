@@ -296,8 +296,8 @@ class QueueController extends \BaseController
         $entryData['people'] = $queue->no_of_people;
         $entryData['created_at'] = $queue->created_at;
         $entryData['totalQueue'] = Queues::totalQueue($queue->queue_type_id);
-        $context = new ZMQContext();
-        $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+        $context = new ZMQContext(1, false);
+        $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'new ticket');
         $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
         $socket->send(json_encode($entryData));
         /**end of websocket stuff**/
@@ -359,8 +359,8 @@ class QueueController extends \BaseController
                     $entryData['id'] = $queue->id;
                     $entryData['type'] = $queue->queue_type_id;
                     $entryData['totalQueue'] = Queues::totalQueue($queue->queue_type_id);
-                    $context = new ZMQContext();
-                    $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+                    $context = new ZMQContext(1, false);
+                    $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'entered');
                     $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
                     $socket->send(json_encode($entryData));
                 }else{
@@ -368,8 +368,8 @@ class QueueController extends \BaseController
                     $entryData['action'] = 'abandon';
                     $entryData['id'] = $queue->id;
                     $entryData['type'] = $queue->queue_type_id;
-                    $context = new ZMQContext();
-                    $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+                    $context = new ZMQContext(1, false);
+                    $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'abandon');
                     $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
                     $socket->send(json_encode($entryData));
                 }
@@ -386,8 +386,8 @@ class QueueController extends \BaseController
             $entryData['action'] = 'dequeue';
             $entryData['id'] = $queue->id;
             $entryData['type'] = $queue->queue_type_id;
-            $context = new ZMQContext();
-            $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+            $context = new ZMQContext(1, false);
+            $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'dequeue');
             $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
             $socket->send(json_encode($entryData));
             /**end of websocket stuff**/
@@ -430,8 +430,8 @@ class QueueController extends \BaseController
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen($data_string))
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data_string))
                 );
                 curl_exec($ch);
 
@@ -448,8 +448,8 @@ class QueueController extends \BaseController
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen($data_string))
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data_string))
                 );
                 curl_exec($ch);
             }
@@ -480,8 +480,8 @@ class QueueController extends \BaseController
         exit("Failed to connect: $err $errstr" . PHP_EOL);
         echo 'Connected to APNS' . PHP_EOL;
         $body['aps'] = array(
-            'alert' => $message,
-            'sound' => 'default'
+        'alert' => $message,
+        'sound' => 'default'
         );
         $payload = json_encode($body);
         if(count($identifiers) > 0){
