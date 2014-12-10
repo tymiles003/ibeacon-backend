@@ -1,22 +1,22 @@
 @import url(http://fonts.googleapis.com/css?family=Lobster+Two:400,700italic);
 @font-face {
     font-family: Proxima;
-    src: local('Proxima Nova'), url("/proxima.woff") format("woff");
+    src        : local('Proxima Nova'), url("/proxima.woff") format("woff");
 }
 input{
-    outline:none;
+    outline: none;
 }
 html, body {
-    height: 100%;
+    height     : 100%;
     font-family: Proxima;
-    font-size: 12px !important;
+    font-size  : 12px !important;
 }
 
 select {
     -webkit-appearance: none;
-    appearance: none;
-    border: 0;
-    border-radius: 0;
+    appearance        : none;
+    border            : 0;
+    border-radius     : 0;
 }
 
 a, a:hover, a:focus {
@@ -24,86 +24,86 @@ a, a:hover, a:focus {
 }
 
 .main > .row {
-    margin: 0;
+    margin     : 0;
     padding-top:64px;
 }
 
 .btn {
-    padding: 5px 8px;
-    font-size: 1em;
+    padding   : 5px 8px;
+    font-size : 1em;
     background: rgba(67, 96, 65, 0.69);
-    color: #f7f7f7;
+    color     : #f7f7f7;
     transition: all .3s linear;
 }
 
 .btn:hover {
     background: #034b03;
-    color: #fff;
+    color     : #fff;
 }
 
 .bg-success {
     background-color: #75C754;
-    color: #095E18;
+    color           : #095E18;
 }
 
 .login {
-    width: 100%;
-    height: 100%;
-    background: #303641;
+    width          : 100%;
+    height         : 100%;
+    background     : #303641;
     background-size: cover;
 }
 
 .login h1{
     font-family: 'Lobster Two', cursive;
-    font-size: 4em;
-    font-style: italic;
-    text-align: center;
-    color: #fff;
+    font-size  : 4em;
+    font-style : italic;
+    text-align : center;
+    color      : #fff;
     text-shadow: 4px 3px 0px #3A4352, 9px 8px 0px rgba(17, 18, 19, 0.15);
 }
 
 .login .warning{
-    margin: 0 10px;
-    font-size: 1.3em;
+    margin     : 0 10px;
+    font-size  : 1.3em;
     font-weight: 700;
-    color: #fff;
-    background: rgba(252, 70, 70, 0.56);
-    padding: 15px;
+    color      : #fff;
+    background : rgba(252, 70, 70, 0.56);
+    padding    : 15px;
 }
 .login .success{
-    margin: 0 10px;
-    font-size: 1.3em;
+    margin     : 0 10px;
+    font-size  : 1.3em;
     font-weight: 700;
-    color: #fff;
-    background: rgba(33, 215, 125, 0.72);
-    padding: 15px;
+    color      : #fff;
+    background : rgba(33, 215, 125, 0.72);
+    padding    : 15px;
 }
 .login label {
-    position: absolute;
-    float: left;
-    color: #fff;
+    position : absolute;
+    float    : left;
+    color    : #fff;
     font-size: 1.6em;
-    top: 20px;
+    top      : 20px;
 }
 
 .login input[type='text'],
 .login input[type='password'] {
-    position: relative;
-    width: 100%;
-    background: transparent;
-    border: 0;
+    position     : relative;
+    width        : 100%;
+    background   : transparent;
+    border       : 0;
     border-radius:0;
-    padding: 9px 50px;
+    padding      : 9px 50px;
     border-bottom: 1px solid #fff;
-    color: #fff;
-    font-size: 1.3em;
+    color        : #fff;
+    font-size    : 1.3em;
 }
 
 .login input[type='submit'], .login .btn{
-    width: 100%;
+    width        : 100%;
     border-radius: 0;
-    font-size: 1.3em;
-    padding: 15px;
+    font-size    : 1.3em;
+    padding      : 15px;
 }
 
 .login .btn{
@@ -135,41 +135,42 @@ a, a:hover, a:focus {
     color: #fff;
 }
 
-.login form, .login .finish {
+.login form, 
+.login .finish {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    width: 400px;
-    height: 300px;
+    top     : 0;
+    bottom  : 0;
+    left    : 0;
+    right   : 0;
+    margin  : auto;
+    width   : 400px;
+    height  : 300px;
 }
 
 .login .form-group {
-    position: relative;
-    border: 0;
+    position     : relative;
+    border       : 0;
     margin-bottom: -20px;
 }
 
 nav.sidebar {
-    width: 100%;
+    width   : 100%;
     position: fixed;
-    z-index: 5;
-    top:0;
+    z-index : 5;
+    top     :0;
 }
 
 nav.sidebar ul {
     list-style-type: none;
-    padding: 0;
-    margin: 0;
-    background: #303641;
-    width: 100%;
-    height: 64px;
+    padding        : 0;
+    margin         : 0;
+    background     : #303641;
+    width          : 100%;
+    height         : 64px;
 }
 
 nav.sidebar ul > li{
-    float: left;
+    float      : left;
     line-height: 64px;
 }
 
@@ -178,33 +179,33 @@ nav.sidebar ul > li .fa {
 }
 
 nav.sidebar ul > li > a {
-    font-size: 1.2em;
-    display: block;
-    padding: 0 30px;
-    width: 100%;
-    height: 100%;
-    color: #ccc;
-    transition: all .3s linear;
+    font-size      : 1.2em;
+    display        : block;
+    padding        : 0 30px;
+    width          : 100%;
+    height         : 100%;
+    color          : #ccc;
+    transition     : all .3s linear;
     text-decoration: none;
 }
 
 nav.sidebar ul > li > a:hover {
-    color: #fff;
+    color     : #fff;
     background: #22262e;
 }
 
 nav.sidebar ul > li > ul {
-    width: auto;
-    position: absolute;
-    height: 0;
-    overflow: hidden;
+    width     : auto;
+    position  : absolute;
+    height    : 0;
+    overflow  : hidden;
     transition: all .6s linear;
 }
 
 nav.sidebar ul > li:hover > ul {
     max-height: 999px;
-    height: auto;
-    display: block;
+    height    : auto;
+    display   : block;
 }
 
 nav.sidebar ul > li > ul > li{
@@ -224,15 +225,15 @@ nav.sidebar ul > li > ul > li > a {
 }
 
 .main_header {
-    text-align: center;
-    padding: 0 20px;
-    background: #448d58;
-    color: #fff;
-    font-size: 1.3em;
-    overflow: hidden;
+    text-align   : center;
+    padding      : 0 20px;
+    background   : #448d58;
+    color        : #fff;
+    font-size    : 1.3em;
+    overflow     : hidden;
     margin-bottom: 15px;
-    line-height: 50px;
-    font-weight: 700;
+    line-height  : 50px;
+    font-weight  : 700;
 }
 
 .main_body {
@@ -242,17 +243,17 @@ nav.sidebar ul > li > ul > li > a {
 .module_title {
     border-bottom: 0;
     border-radius: 5px 5px 0 0;
-    padding: 10px 15px;
-    font-size: 1.2em;
-    color: #fff;
-    font-weight: 700;
-    background: #2C406C;
+    padding      : 10px 15px;
+    font-size    : 1.2em;
+    color        : #fff;
+    font-weight  : 700;
+    background   : #2C406C;
 }
 
 .module_toolbar {
-    padding: 10px 15px;
+    padding   : 10px 15px;
     background: #373737;
-    color: #fff;
+    color     : #fff;
 }
 
 .module_content {
@@ -276,13 +277,13 @@ nav.sidebar ul > li > ul > li > a {
 }
 
 .module {
-    clear: both;
-    color: #666;
+    clear        : both;
+    color        : #666;
     margin-bottom: 15px;
 }
 
 .module > table {
-    width: 100%;
+    width     : 100%;
     background: #fff;
 }
 
@@ -293,11 +294,11 @@ nav.sidebar ul > li > ul > li > a {
 
 .module > table > tbody > tr:hover {
     background: #919798;
-    color: #efefef;
+    color     : #efefef;
 }
 
 .module > table tr > td {
-    border: 1px solid #ccc;
+    border : 1px solid #ccc;
     padding: 8px 15px;
 }
 
@@ -317,8 +318,8 @@ nav.sidebar ul > li > ul > li > a {
 
 .module_body > form input[type='text'],
 .module_body > form input[type='password'] {
-    border: 1px solid #aaa;
-    padding: 5px;
+    border       : 1px solid #aaa;
+    padding      : 5px;
     border-radius: 5px;
 }
 
@@ -333,26 +334,26 @@ nav.sidebar ul > li > ul > li > a {
 .form-group {
     margin-bottom: 0;
     border-bottom: 1px solid #ccc;
-    overflow: hidden;
-    padding: 15px 10px;
+    overflow     : hidden;
+    padding      : 15px 10px;
 }
 
 .form-group select {
-    padding: 5px 15px;
+    padding      : 5px 15px;
     border-radius: 5px;
-    border: 1px solid #aaa;
+    border       : 1px solid #aaa;
 }
 
 .bg-success {
-    padding: 10px 20px;
+    padding    : 10px 20px;
     font-weight: 700;
-    font-size: 1.3em;
+    font-size  : 1.3em;
 }
 
 /**DECORATIVE MODULES**/
 .tile {
     border-radius: 5px;
-    padding: 15px;
+    padding      : 15px;
     margin-bottom: 15px;
 }
 
@@ -363,62 +364,62 @@ nav.sidebar ul > li > ul > li > a {
 
 .header_fixed{
     position: fixed;
-    width: 100%;
-    top: 64px;
-    left: 0;
-    z-index: 4;
+    width   : 100%;
+    top     : 64px;
+    left    : 0;
+    z-index : 4;
 }
 .tile_row_fixed {
-    position: fixed;
-    width: 100%;
-    top: 50px;
-    left: 0;
+    position   : fixed;
+    width      : 100%;
+    top        : 50px;
+    left       : 0;
     padding-top: 79px;
-    z-index: 3;
-    background: rgba(0, 0, 0, .7);
+    z-index    : 3;
+    background : rgba(0, 0, 0, .7);
 }
 
 .tile_heading {
-    position: relative;
+    position : relative;
     font-size: 1.2em;
 }
 
 .tile_icon {
-    position: absolute;
-    right: 0;
+    position : absolute;
+    right    : 0;
     font-size: 6rem;
-    bottom: -25px;
-    opacity: .7;
+    bottom   : -25px;
+    opacity  : .7;
 }
 
 .tile_content {
-    font-size: 3em;
+    font-size  : 3em;
     font-weight: 700;
 }
 
 .tile_green {
     background: #717171;
-    color: #efefef;
+    color     : #efefef;
 }
 
 .tile_red {
     background: rgb(244, 100, 100);
-    color: #efefef;
+    color     : #efefef;
 }
 
 .tile_blue {
     background: rgb(100, 162, 244);
-    color: #efefef;
+    color     : #efefef;
 }
 
 .tile_orange {
     background: rgb(244, 166, 100);
-    color: #efefef;
+    color     : #efefef;
 }
 
 .chart_select {
-    color: #32C24A;
-    background: transparent;
+    color       : #32C24A;
+    background  : transparent;
     margin-right: 20px;
 }
 

@@ -6,12 +6,14 @@ Route::get('install', function(){
 });
 
 Route::post('install', function(){
-    $config_path = app_path()."/config";
+    //set installatin path
+    $config_path  = app_path()."/config";
     $default_file = $config_path."/database_default.php";
-    $output_file = $config_path."/database.php";
+    $output_file  = $config_path."/database.php";
+    //set database username
     $dbname = Input::get('dbname');
     $dbuser = Input::get('dbuser');
-    $dbpw = Input::get('dbpw');
+    $dbpw   = Input::get('dbpw');
     try{
         $db = new PDO('mysql:host=localhost;dbname='.$dbname.';charset=utf8', $dbuser, $dbpw, array(PDO::ATTR_EMULATE_PREPARES => false,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
@@ -96,9 +98,9 @@ Route::post('install', function(){
         (10, 'mallpw', '')");
         $sth->execute();
         shell_exec('sed -e "s/\[dbname\]/'.$dbname.'/" -e "s/\[dbuser\]/'.$dbuser.'/" -e "s/\[dbpw\]/'.$dbpw.'/" '. $default_file. ' > '. $output_file);
-        $user = new User();
-        $user->email = Input::get('user');
-        $user->right = '1';
+        $user           = new User();
+        $user->email    = Input::get('user');
+        $user->right    = '1';
         $user->password = Hash::make(Input::get('pw'));
         $user->save();
         return View::make('finish');
@@ -114,8 +116,8 @@ Route::filter('api', function () {
     if(Auth::user()->right != 1 && Auth::user()->right != 2){
         $response = array();
         $response['status'] = 'ERROR';
-        $response['code'] = 401;
-        $response['debug'] = 'Unauthorized access';
+        $response['code']   = 401;
+        $response['debug']  = 'Unauthorized access';
         return Response::json($response);
     }
 });
@@ -127,7 +129,7 @@ Route::get('setting/beacon', function () {
     $major = DB::table('setting')->where('key', '=', 'beaconmajor')->first();
     $minor = DB::table('setting')->where('key', '=', 'beaconminor')->first();
     $response = array();
-    $response['uuid'] = $uuid->value;
+    $response['uuid']  = $uuid->value;
     $response['major'] = $major->value;
     $response['minor'] = $minor->value;
     return Response::json($response);
@@ -142,19 +144,19 @@ Route::group(['before' => array('auth.basic', 'api')], function() {
         if(!isset($deviceToken)){
             $response = array();
             $response['status'] = 'ERROR';
-            $response['code'] = 500;
-            $response['debug'] = 'Wrong parameters';
+            $response['code']   = 500;
+            $response['debug']  = 'Wrong parameters';
             return Response::json($response);
         }
-        $token = str_replace(' ', '', $deviceToken);
-        $token = str_replace('<', '', $token);
-        $token = str_replace('>', '', $token);
+        $token      = str_replace(' ', '', $deviceToken);
+        $token      = str_replace('<', '', $token);
+        $token      = str_replace('>', '', $token);
         $identifier = hash('sha256', $token);
         $device = DB::table('pushmessage')->where('token', $token)->get(); //check existence
         if(count($device) == 0) { //insert an record if it does not exist
             DB::table('pushmessage')->insert(array('token' => $token, 'identifier' => $identifier));
         }
-        $response = array();
+        $response               = array();
         $response['identifier'] = $identifier;
         return Response::json($response);
     });

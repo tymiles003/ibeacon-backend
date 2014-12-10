@@ -175,8 +175,8 @@ class QueueController extends \BaseController
         if (!isset($type)) {
             $response = array();
             $response['status'] = 'ERROR';
-            $response['code'] = 500;
-            $response['debug'] = 'Wrong paramters';
+            $response['code']   = 500;
+            $response['debug']  = 'Wrong paramters';
             return Response::json($response);
         }
         return Response::json(Queues::waitingTime($type));
@@ -252,8 +252,8 @@ class QueueController extends \BaseController
         if (!isset($capacity) && !isset($type)) {
             $response = array();
             $response['status'] = 'ERROR';
-            $response['code'] = 500;
-            $response['debug'] = 'Wrong paramters';
+            $response['code']   = 500;
+            $response['debug']  = 'Wrong paramters';
             return Response::json($response);
         }
         //if no capcity is found, suppose only one person
@@ -273,8 +273,8 @@ class QueueController extends \BaseController
         if (QueueType::find($type)->disabled == 1){
             $response = array();
             $response['status'] = 'ERROR';
-            $response['code'] = 500;
-            $response['debug'] = 'The queue is closed';
+            $response['code']   = 499;
+            $response['debug']  = 'The queue is closed';
             return Response::json($response);
         }
         $identifier = Input::get('identifier');
@@ -317,8 +317,8 @@ class QueueController extends \BaseController
         if(!$queue){
             $response = array();
             $response['status'] = 'ERROR';
-            $response['code'] = 500;
-            $response['debug'] = 'No such ticket';
+            $response['code']   = 498;
+            $response['debug']  = 'No such ticket';
             return Response::json($response);
         }
         return $queue->toJson();
@@ -355,9 +355,9 @@ class QueueController extends \BaseController
                 //websocket message
                 if($entered == 2){
                     $entryData = array();
-                    $entryData['action'] = 'entered';
-                    $entryData['id'] = $queue->id;
-                    $entryData['type'] = $queue->queue_type_id;
+                    $entryData['action']     = 'entered';
+                    $entryData['id']         = $queue->id;
+                    $entryData['type']       = $queue->queue_type_id;
                     $entryData['totalQueue'] = Queues::totalQueue($queue->queue_type_id);
                     $context = new ZMQContext(1, false);
                     $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'entered');
@@ -366,8 +366,8 @@ class QueueController extends \BaseController
                 }else{
                     $entryData = array();
                     $entryData['action'] = 'abandon';
-                    $entryData['id'] = $queue->id;
-                    $entryData['type'] = $queue->queue_type_id;
+                    $entryData['id']     = $queue->id;
+                    $entryData['type']   = $queue->queue_type_id;
                     $context = new ZMQContext(1, false);
                     $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'abandon');
                     $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
@@ -384,8 +384,8 @@ class QueueController extends \BaseController
             /**web socket stuff**/
             $entryData = array();
             $entryData['action'] = 'dequeue';
-            $entryData['id'] = $queue->id;
-            $entryData['type'] = $queue->queue_type_id;
+            $entryData['id']     = $queue->id;
+            $entryData['type']   = $queue->queue_type_id;
             $context = new ZMQContext(1, false);
             $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'dequeue');
             $socket->connect("tcp://127.0.0.1:".Setting::getPPort());
@@ -396,7 +396,7 @@ class QueueController extends \BaseController
             //if display number, then send notification
             if (count($query) > 0) {
                 $data = array();
-                $data['message'] = Setting::getName().": It is your number";
+                $data['message']     = Setting::getName().": It is your number";
                 $data['identifiers'] = array($queue->identifier);
                 $data_string = json_encode($data);
                 $this->sendPushNotification($data_string);
@@ -421,7 +421,7 @@ class QueueController extends \BaseController
             $mallURL = Setting::getMallSystem();
             if(!empty($mallURL)){
                 $data = array();
-                $data['message'] = Setting::getName().": It is your number";
+                $data['message']     = Setting::getName().": It is your number";
                 $data['identifiers'] = array($queue->identifier);
                 $data_string = json_encode($data);
                 $ch = curl_init($mallURL.'/sendMessage');
@@ -430,8 +430,8 @@ class QueueController extends \BaseController
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data_string))
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($data_string))
                 );
                 curl_exec($ch);
 
@@ -448,8 +448,8 @@ class QueueController extends \BaseController
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data_string))
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($data_string))
                 );
                 curl_exec($ch);
             }
@@ -463,8 +463,8 @@ class QueueController extends \BaseController
         if (!isset($data->message)) {
             $response = array();
             $response['status'] = 'ERROR';
-            $response['code'] = 500;
-            $response['debug'] = 'Wrong parameters';
+            $response['code']   = 500;
+            $response['debug']  = 'Wrong parameters';
             return Response::json($response);
         }
         $passphrase = '123456';
@@ -474,15 +474,15 @@ class QueueController extends \BaseController
         stream_context_set_option($ctx, 'ssl', 'local_cert', 'qk.pem');
         stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
         $fp = stream_socket_client(
-        'ssl://gateway.sandbox.push.apple.com:2195', $err,
-        $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
+            'ssl://gateway.sandbox.push.apple.com:2195', $err,
+            $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
         if (!$fp)
-        exit("Failed to connect: $err $errstr" . PHP_EOL);
+            exit("Failed to connect: $err $errstr" . PHP_EOL);
         echo 'Connected to APNS' . PHP_EOL;
         $body['aps'] = array(
-        'alert' => $message,
-        'sound' => 'default'
-        );
+            'alert' => $message,
+            'sound' => 'default'
+            );
         $payload = json_encode($body);
         if(count($identifiers) > 0){
             $tokens = DB::table('pushmessage')
